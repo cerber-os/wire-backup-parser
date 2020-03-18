@@ -144,7 +144,18 @@ def printStat_reactsGiven():
         for key in (event.reactions or []):
             counts[PREDEFINED_USERS[key]] += 1
     
-    printCounts("Reacts given", counts)
+    printCounts("Reacts given", counts, showShare=True)
+    
+def printStat_reactsReceived():   
+    counts = {}
+    
+    for user in PREDEFINED_USERS:
+        counts[PREDEFINED_USERS[user]] = 0
+    
+    for event in Events:
+        counts[event.origin] += len(event.reactions or [])
+    
+    printCounts("Reacts received", counts, showShare=True)    
 
 def printStat_messagesLikedBy(user):
     msgs = filter(lambda x: user in (x.reactions or []), Events)
@@ -275,6 +286,7 @@ if __name__ == '__main__':
     
     # print stats
     printStat_reactsGiven()
+    printStat_reactsReceived()
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
     printStat_selfAdoration()
