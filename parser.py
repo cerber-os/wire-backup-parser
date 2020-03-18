@@ -214,7 +214,7 @@ def mostLikedMessages(year):
     count = 0
     top = [["Author", "Message", "Date", "Likes"]]
     table_instance = SingleTable(top, "Most liked messages in " + year)
-    max_width = table_instance.column_max_width(1)    
+    max_width = 50 
     sort = sorted(Events, key=lambda x: len(x.reactions if x.reactions is not None else []), reverse=True)
     for el in sort:
         if el.conv_id == MI3 and el.time.startswith(year):
