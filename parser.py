@@ -10,9 +10,11 @@ def printExportInfo(exportInfo):
         ("Username", exportInfo.get('user_name', '[None]')),
         ("Version", str(exportInfo.get('version', '[None]'))),
     )
+    
     table_instance = SingleTable(pkg_info, "Export Info")
     table_instance.justify_columns[1] = 'right'
     table_instance.inner_heading_row_border = False
+    
     print(table_instance.table) 
 
 #############################################
@@ -121,7 +123,7 @@ class Event:
         else:
             return "[{}] UNKNOWN <{}>".format(self.time, self.origin)
 
-def parseEvents(events):
+def collectEvents(events):
     global Events
     
     for event in events:
@@ -129,7 +131,7 @@ def parseEvents(events):
     
     Events = sorted(Events, key=lambda x: x.time)
         
-def printEventsInfo():
+def listEvents():
     for event in Events:
         if event.conv_id != MI3:
             continue
@@ -150,7 +152,7 @@ def getAccessToken(email, password):
 #############################################
 # Search engine
 #############################################
-def grantedMostReactions():
+def printStat_reactsGiven():
     users = {}
     for user in PREDEFINED_USERS:
         users[user] = 0
@@ -172,7 +174,7 @@ def grantedMostReactions():
     table_instance.justify_columns[1] = 'right'
     print(table_instance.table)
 
-def likedMsgsBy(user):
+def printStat_messagesLikedBy(user):
     msgs = [["Author", "Message"]]
     for event in Events:
         if event.conv_id == MI3 and event.reactions is not None:
@@ -186,7 +188,7 @@ def likedMsgsBy(user):
     table_instance.inner_heading_row_border = False
     print(table_instance.table)
 
-def usersShareInMessages():
+def printStat_usersShare():
     counts = {}
     total = 0
     for user in PREDEFINED_USERS:
@@ -205,7 +207,7 @@ def usersShareInMessages():
     table_instance.justify_columns[2] = 'right'
     print(table_instance.table)
     
-def mostLikedMessages(year):
+def printStat_bestMessages(year):
     count = 0
     top = [["Author", "Message", "Date", "Likes"]]
     table_instance = SingleTable(top, "Most liked messages in " + year)
@@ -235,19 +237,21 @@ if __name__ == '__main__':
     
     with open('./conversations.json', 'r', encoding='utf-8') as f:
         convs = json.load(f)
-     
+    
+    # export info
     printExportInfo(exportInfo)
+    
+    # converastion info
     collectConversations(convs)
     listConversations()
     
-    parseEvents(events)
-    grantedMostReactions()
-    likedMsgsBy('11638a43-0074-4152-8379-11d803d9d628')
-    # likedMsgsBy('a4254b98-6adb-49f1-b2f9-27e2c8051e86')
-    
-    usersShareInMessages()
+    # statistics
+    collectEvents(events)
+    printStat_reactsGiven()
+    printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
+    printStat_usersShare()
     for year in range(2017, 2021):
-        mostLikedMessages(str(year))
+        printStat_bestMessages(str(year))
         
     print("Preparing for dumping images")
     print("Wire credentials are required")
