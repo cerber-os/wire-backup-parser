@@ -14,9 +14,6 @@
 				
 				background-color: #FAFAFA;
 			}
-			nav {
-				display: flex;
-			}
 			main {
 				background-color: #FFFFFF;
 				border: 1px solid #D1D5DA;
@@ -47,7 +44,10 @@
 				margin: 100px auto;
 			}
 			
-			nav > label {
+			nav form {
+				display: flex;
+			}
+			nav label {
 				display: flex;
 				width: 100%;
 				box-sizing: border-box;
@@ -58,15 +58,22 @@
 				
 				cursor: pointer;
 			}
-			nav > input:checked + label {
+			nav input:checked + label {
 				background-color: #FFFFFF;
 				border: 1px solid #D1D5DA;
 				border-bottom: none;
 				
 				font-weight: 500;
 			}
-			nav > input {
+			nav input {
 				display: none;
+			}
+			
+			section {
+				display: none;
+			}
+			section.enabled {
+				display: block;
 			}
 			
 			div.overviewcontrols {
@@ -120,20 +127,31 @@
 				}
 			}
 		</style>
+		
+		<script type="text/javascript">
+			function switchScreen(form) {
+				document.querySelector("section.enabled").className = "";
+				
+				var screen = form.elements.screen.value;
+				document.getElementById(screen).className = "enabled";
+			}
+		</script>
 	</head>
 	<body>
 		<div class="main">
 			<h1>{{ convname }} - Summary</h1>
 			<nav>
-				<input type="radio" name="screen" value="overview" id="screen_overview" checked>
-				<label for="screen_overview">Overview</label>
-				<input type="radio" name="screen" value="statistics" id="screen_statistics">
-				<label for="screen_statistics">Statistics</label>
-				<input type="radio" name="screen" value="media" id="screen_media">
-				<label for="screen_media">Media</label>
+				<form onchange="switchScreen(this)">
+					<input type="radio" name="screen" value="overview" id="screen_overview" checked>
+					<label for="screen_overview">Overview</label>
+					<input type="radio" name="screen" value="statistics" id="screen_statistics">
+					<label for="screen_statistics">Statistics</label>
+					<input type="radio" name="screen" value="media" id="screen_media">
+					<label for="screen_media">Media</label>
+				</form>
 			</nav>
 			<main>
-				<section id="overview">
+				<section id="overview" class="enabled">
 					<div class="overviewcontrols">
 						<select>
 							<option>Newest first</option>
@@ -188,6 +206,12 @@
 						<input type="number" class="page" value="1" min="1" max="2137">
 						of 2137
 					</div>
+				</section>
+				<section id="statistics">
+					stats
+				</section>
+				<section id="media">
+					media
 				</section>
 			</main>
 			<footer>
