@@ -220,7 +220,20 @@ def printStat_hourDistribution():
         
         distribution[hour] += 1
         
-    printCounts("Distirbution by time", distribution, sort="key_asc", showShare=True, dataKey="Hour", dataValue="Messages")    
+    printCounts("Distirbution by time", distribution, sort="key_asc", showShare=True, histoShare=True, dataKey="Hour", dataValue="Messages")
+    
+def printStat_monthDistribution():
+    distribution = {}
+    
+    for event in Events:
+        time = dateutil.parser.isoparse(event.time)
+        if time.year == 1970:
+            continue
+        time = time.strftime("%Y-%m")
+        
+        distribution[time] = distribution.get(time, 0) + 1
+        
+    printCounts("Distirbution by period", distribution, sort="key_alpha_asc", showShare=True, histoShare=True, dataKey="Period", dataValue="Messages")    
         
 def printMessages(title, messages, includeLikes=False, maxCount=10):
     data = [["Author", "Message", "Date"]]
@@ -252,22 +265,35 @@ def printMessages(title, messages, includeLikes=False, maxCount=10):
         table_instance.justify_columns[3] = 'right'
     print(table_instance.table)
     
-def printCounts(title, data, showShare=False, sort="value_desc", dataKey="Author", dataValue="Amount"):
+def printCounts(title, data, showShare=False, histoShare=False, sort="value_desc", dataKey="Author", dataValue="Amount"):
     entries = []
     total = 0
+    maxValue = 0
     
     for key in data:
         total += data[key]
+        maxValue = max(maxValue, data[key])
         
     for key in data:
         entry = [[key, data[key]]]
         if showShare:
-            entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
+            if histoShare:
+                percentage = data[key] / total
+                normalized = percentage / (maxValue / total)
+            
+                entry[0] += [u"\u2588" * round(normalized * 25)]
+            else:
+                entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
         
         entries += entry
     
     if sort:
-        entries = sorted(entries, key=lambda x: int(x[sort.startswith("value_")]), reverse=sort.endswith("_desc"))
+        if "_alpha_" in sort:
+            sortfun = lambda x: str(x[sort.startswith("value_")])
+        else:
+            sortfun = lambda x: int(x[sort.startswith("value_")])
+        
+        entries = sorted(entries, key=sortfun, reverse=sort.endswith("_desc"))
     
     header = [dataKey, dataValue]
     footer = ["Total", total]
@@ -278,7 +304,7 @@ def printCounts(title, data, showShare=False, sort="value_desc", dataKey="Author
     
     table_instance = SingleTable(entries, title)
     table_instance.justify_columns[1] = "right"
-    table_instance.justify_columns[2] = "right"
+    table_instance.justify_columns[2] = "right" if not histoShare else "left"
     table_instance.inner_footing_row_border = True
     print(table_instance.table)
     
@@ -324,6 +350,7 @@ if __name__ == '__main__':
     printStat_usersShare()
     printStat_selfAdoration()
     printStat_hourDistribution()
+    printStat_monthDistribution()
     for year in range(2017, 2021):
         printStat_bestMessages(year)
         
