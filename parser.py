@@ -96,6 +96,7 @@ class Event:
     def __init__(self, event):
         self.conv_id = event['conversation']
         self.origin = event['from']
+        self.origin_id = event['from']
         self.time = event['time']
         self.type = event['type']
         
@@ -166,6 +167,18 @@ def printStat_bestMessages(year):
     top = sorted(top, key=lambda x: len(x.reactions or []), reverse=True)
     
     printMessages("Best messages of {}".format(year), top, includeLikes=True)
+    
+def printStat_selfAdoration():
+    counts = {}
+    
+    for user in PREDEFINED_USERS:
+        counts[PREDEFINED_USERS[user]] = 0
+        
+    for event in Events:
+        if (event.origin_id in (event.reactions or [])):
+            counts[event.origin] += 1
+        
+    printCounts("Self-awarded likes", counts)
     
 def printMessages(title, messages, includeLikes=False, maxCount=10):
     data = [["Author", "Message", "Date"]]
@@ -264,6 +277,7 @@ if __name__ == '__main__':
     printStat_reactsGiven()
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
+    printStat_selfAdoration()
     for year in range(2017, 2021):
         printStat_bestMessages(year)
         
