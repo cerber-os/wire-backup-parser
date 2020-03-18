@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ convname }} - Summary</title>
+		
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,500,700&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width">
+		<meta charset="UTF-8">
+		
+		<style>
+			body {
+				font-family: Roboto, sans-serif;
+				font-weight: 300;
+				
+				background-color: #FAFAFA;
+			}
+			nav {
+				display: flex;
+			}
+			nav > label {
+				display: flex;
+				width: 100%;
+				box-sizing: border-box;
+				height: 3em;
+				
+				justify-content: center;
+				align-items: center;
+				
+				cursor: pointer;
+			}
+			nav > input:checked + label {
+				background-color: #FFFFFF;
+				border: 1px solid #D1D5DA;
+				border-bottom: none;
+				
+				font-weight: 500;
+			}
+			nav > input {
+				display: none;
+			}
+			main {
+				background-color: #FFFFFF;
+				border: 1px solid #D1D5DA;
+				
+				padding: 1em;
+			}
+			footer {
+				font-size: 10pt;
+				margin: 0.5em 0;
+				text-align: right;
+				color: #AAAAAA;
+			}
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
+			div.main {
+				width: 100%;
+				max-width: 1000px;
+				
+				margin: 100px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<h1>{{ convname }} - Summary</h1>
+			<nav>
+				<input type="radio" name="screen" value="overview" id="screen_overview" checked>
+				<label for="screen_overview">Overview</label>
+				<input type="radio" name="screen" value="statistics" id="screen_statistics">
+				<label for="screen_statistics">Statistics</label>
+				<input type="radio" name="screen" value="media" id="screen_media">
+				<label for="screen_media">Media</label>
+			</nav>
+			<main>
+				<p>diabelskie dupsko</p>
+			</main>
+			<footer>
+				Wire Backup Parser by Armia Prezesa
+			</footer>
+		</div>
+	</body>
+</html>
