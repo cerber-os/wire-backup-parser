@@ -133,24 +133,17 @@ def collectEvents(events):
 #############################################
 # Statistics parser
 #############################################
-def printStat_reactsGiven():
-    users = {}
+def printStat_reactsGiven():   
+    counts = {}
+    
     for user in PREDEFINED_USERS:
-        users[user] = 0
+        counts[PREDEFINED_USERS[user]] = 0
     
     for event in Events:
         for key in (event.reactions or []):
-            users[key] += 1
+            counts[PREDEFINED_USERS[key]] += 1
     
-    stats = []
-    for user in users:
-        stats.append([PREDEFINED_USERS[user], str(users[user])])
-    stats = sorted(stats, key=lambda x: int(x[1]), reverse=True)
-    stats = [["Username", "Count"]] + stats
-    
-    table_instance = SingleTable(stats, "Reacts given")
-    table_instance.justify_columns[1] = 'right'
-    print(table_instance.table)
+    printCounts("Reacts given", counts)
 
 def printStat_messagesLikedBy(user):
     msgs = filter(lambda x: user in (x.reactions or []), Events)
@@ -159,27 +152,14 @@ def printStat_messagesLikedBy(user):
 
 def printStat_usersShare():
     counts = {}
-    total = 0
     
     for user in PREDEFINED_USERS:
         counts[PREDEFINED_USERS[user]] = 0
     
     for event in Events:
-        total += 1
         counts[event.origin] += 1
     
-    entries = []
-    for key in counts:
-        entries += [[key, str(counts[key]), str(round(counts[key] / total * 100, 2)) + '%']]
-    entries = sorted(entries, key=lambda x: int(x[1]), reverse=True)
-    
-    entries = [["Author", "Amount", "Share"]] + entries
-    entries += [["Total", str(total), "100%"]]
-    
-    table_instance = SingleTable(entries, "Users share in messages")
-    table_instance.justify_columns[2] = 'right'
-    table_instance.inner_footing_row_border = True
-    print(table_instance.table)
+    printCounts("Users share in messages", counts, showShare=True)
     
 def printStat_bestMessages(year):
     top = filter(lambda x: x.time.startswith(str(year)), Events)
@@ -215,6 +195,35 @@ def printMessages(title, messages, includeLikes=False, maxCount=10):
             
     if (includeLikes):
         table_instance.justify_columns[3] = 'right'
+    print(table_instance.table)
+    
+def printCounts(title, data, showShare=False, ascending=False):
+    entries = []
+    total = 0
+    
+    for key in data:
+        total += data[key]
+        
+    for key in data:
+        entry = [[key, data[key]]]
+        if showShare:
+            entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
+        
+        entries += entry
+        
+    entries = sorted(entries, key=lambda x: int(x[1]), reverse=not ascending)
+    
+    header = ["Author", "Amount"]
+    footer = ["Total", total]
+    if showShare:
+        header += ["Share"]
+        footer += ["100%"]
+    entries = [header] + entries + [footer]
+    
+    table_instance = SingleTable(entries, title)
+    table_instance.justify_columns[1] = "right"
+    table_instance.justify_columns[2] = "right"
+    table_instance.inner_footing_row_border = True
     print(table_instance.table)
     
 #############################################
