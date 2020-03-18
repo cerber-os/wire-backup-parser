@@ -70,7 +70,7 @@ PREDEFINED_USERS = {
     '3e4869c6-c46a-4d1f-831b-4f4867ac9dbe': 'Cycuel',
     'a4254b98-6adb-49f1-b2f9-27e2c8051e86': 'Damian',
     'c19103b5-bd0b-4e08-b632-209fb3a68b0c': 'DarkRob',
-    '11638a43-0074-4152-8379-11d803d9d628': 'Kacper Budzidło'
+    '11638a43-0074-4152-8379-11d803d9d628': 'Budziło'
 }
 
 Events = []
@@ -161,20 +161,10 @@ def printStat_reactsGiven():
     print(table_instance.table)
 
 def printStat_messagesLikedBy(user):
-    msgs = [["Author", "Message"]]
+    msgs = filter(lambda x: x.conv_id == MI3, Events)
+    msgs = filter(lambda x: user in (x.reactions or []), msgs)
     
-    for event in Events:
-        if event.conv_id == MI3 and event.reactions is not None:
-            if user in event.reactions:
-                if event.type == EVT_TYPE_ASSET_ADD:
-                    msgs += [[event.origin, "Asset {}".format(event.img_type)]]
-                else:
-                    msgs += [[event.origin, event.message]]
-    
-    table_instance = SingleTable(msgs, "Messages liked by {}".format(PREDEFINED_USERS[user]))
-    table_instance.inner_row_border = True
-    table_instance.inner_heading_row_border = False
-    print(table_instance.table)
+    printMessages("Messages liked by {}".format(PREDEFINED_USERS[user]), msgs)
 
 def printStat_usersShare():
     counts = {}
@@ -196,7 +186,8 @@ def printStat_usersShare():
     print(table_instance.table)
     
 def printStat_bestMessages(year):
-    top = filter(lambda x: x.time.startswith(str(year)), Events)
+    top = filter(lambda x: x.conv_id == MI3, Events)
+    top = filter(lambda x: x.time.startswith(str(year)), top)
     top = sorted(top, key=lambda x: len(x.reactions or []), reverse=True)
     
     printMessages("Best messages of {}".format(year), top, includeLikes=True)
