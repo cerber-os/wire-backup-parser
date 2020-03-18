@@ -129,13 +129,6 @@ def collectEvents(events):
         Events.append(Event(event))
     
     Events = sorted(Events, key=lambda x: x.time)
-        
-def listEvents():
-    for event in Events:
-        if event.conv_id != MI3:
-            continue
-        
-        print(event)
 
 #############################################
 # Statistics parser
@@ -146,9 +139,8 @@ def printStat_reactsGiven():
         users[user] = 0
     
     for event in Events:
-        if event.conv_id == MI3 and event.reactions is not None:
-            for key in event.reactions:
-                users[key] += 1
+        for key in (event.reactions or []):
+            users[key] += 1
     
     stats = []
     for user in users:
@@ -161,8 +153,7 @@ def printStat_reactsGiven():
     print(table_instance.table)
 
 def printStat_messagesLikedBy(user):
-    msgs = filter(lambda x: x.conv_id == MI3, Events)
-    msgs = filter(lambda x: user in (x.reactions or []), msgs)
+    msgs = filter(lambda x: user in (x.reactions or []), Events)
     
     printMessages("Messages liked by {}".format(PREDEFINED_USERS[user]), msgs)
 
@@ -174,9 +165,8 @@ def printStat_usersShare():
         counts[PREDEFINED_USERS[user]] = 0
     
     for event in Events:
-        if event.conv_id == MI3:
-            total += 1
-            counts[event.origin] += 1
+        total += 1
+        counts[event.origin] += 1
     
     entries = []
     for key in counts:
@@ -192,8 +182,7 @@ def printStat_usersShare():
     print(table_instance.table)
     
 def printStat_bestMessages(year):
-    top = filter(lambda x: x.conv_id == MI3, Events)
-    top = filter(lambda x: x.time.startswith(str(year)), top)
+    top = filter(lambda x: x.time.startswith(str(year)), Events)
     top = sorted(top, key=lambda x: len(x.reactions or []), reverse=True)
     
     printMessages("Best messages of {}".format(year), top, includeLikes=True)
@@ -258,8 +247,11 @@ if __name__ == '__main__':
     collectConversations(convs)
     listConversations()
     
-    # statistics
+    # collect and filter events
     collectEvents(events)
+    Events = [x for x in Events if x.conv_id == MI3]
+    
+    # print stats
     printStat_reactsGiven()
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
