@@ -169,20 +169,26 @@ def printStat_messagesLikedBy(user):
 def printStat_usersShare():
     counts = {}
     total = 0
+    
     for user in PREDEFINED_USERS:
         counts[PREDEFINED_USERS[user]] = 0
+    
     for event in Events:
         if event.conv_id == MI3:
             total += 1
             counts[event.origin] += 1
     
-    msgs = []
+    entries = []
     for key in counts:
-        msgs += [[key, str(counts[key]), str(round(counts[key] / total * 100, 2)) + '%']]
-    msgs = sorted(msgs, key=lambda x: int(x[1]), reverse=True)
-    msgs = [["Author", "Amount", "Share"]] + msgs + [["-----", "Total", str(total)]]
-    table_instance = SingleTable(msgs, "Users share in messages")
+        entries += [[key, str(counts[key]), str(round(counts[key] / total * 100, 2)) + '%']]
+    entries = sorted(entries, key=lambda x: int(x[1]), reverse=True)
+    
+    entries = [["Author", "Amount", "Share"]] + entries
+    entries += [["Total", str(total), "100%"]]
+    
+    table_instance = SingleTable(entries, "Users share in messages")
     table_instance.justify_columns[2] = 'right'
+    table_instance.inner_footing_row_border = True
     print(table_instance.table)
     
 def printStat_bestMessages(year):
