@@ -76,7 +76,6 @@ PREDEFINED_USERS = {
     'c19103b5-bd0b-4e08-b632-209fb3a68b0c': 'DarkRob',
     '11638a43-0074-4152-8379-11d803d9d628': 'Kacper Budzidło',
     '095c2090-a236-4475-9ca8-6b9185b9a246': 'Ku Klucz Klan'
-    
 }
 
 Events = []
