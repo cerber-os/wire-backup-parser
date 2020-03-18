@@ -61,6 +61,7 @@ EVT_TYPE_MSG_ADD = 'conversation.message-add'
 EVT_TYPE_ASSET_ADD = 'conversation.asset-add'
 EVT_TYPE_KNOCK = 'conversation.knock'
 
+MI3 = '94dde542-02b8-4ebf-92d1-cf5ff5798a07'
 PREDEFINED_USERS = {
     '474bf8fd-bb2e-4cba-aada-ddefb4c7e146': 'Przemu',
     'faea135f-20b6-4677-aecd-b24dc623e45d': 'Dominik',
@@ -75,6 +76,8 @@ PREDEFINED_USERS = {
     'c19103b5-bd0b-4e08-b632-209fb3a68b0c': 'DarkRob',
     '11638a43-0074-4152-8379-11d803d9d628': 'Kacper Budzidło'
 }
+
+Events = []
 
 class Event:
     conv_id = ''
@@ -110,10 +113,7 @@ class Event:
             self.img_type = event['data']['content_type']
             self.img_sha256 = event['data'].get('sha256')
             self.img_otr_key = event['data'].get('otr_key')
-        elif self.type == EVT_TYPE_KNOCK:
-            pass
         else:
-            # print("WARN: Unknown event type {}".format(self.type))
             pass
 
     def __str__(self):
@@ -126,20 +126,20 @@ class Event:
         else:
             return "[{}] UNKNOWN <{}>".format(self.time, self.origin)
 
-Events = []
-MI3 = ''
-
 def parseEvents(events):
-    global Events, MI3
-    MI3 = getGroupIdByName("III MI")
+    global Events
+    
     for event in events:
         Events.append(Event(event))
+    
     Events = sorted(Events, key=lambda x: x.time)
         
 def printEventsInfo():
     for event in Events:
-        if event.conv_id == MI3 and event.origin.startswith('\033['):
-            print(event)
+        if event.conv_id != MI3:
+            continue
+        
+        print(event)
 
 #############################################
 # Image download
