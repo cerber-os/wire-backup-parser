@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import getpass
 import json
+import dateutil.parser
+from datetime import datetime, timezone
 from terminaltables import SingleTable
 from textwrap import wrap
 
@@ -206,6 +208,20 @@ def printStat_selfAdoration():
         
     printCounts("Self-awarded likes", counts)
     
+def printStat_hourDistribution():
+    distribution = {}
+    for i in range(0, 24):
+        distribution[i] = 0
+    
+    for event in Events:
+        hour = dateutil.parser.isoparse(event.time)
+        hour = hour.replace(tzinfo=timezone.utc).astimezone(tz=None)
+        hour = hour.hour
+        
+        distribution[hour] += 1
+        
+    printCounts("Distirbution by time", distribution, sort="key_asc", showShare=True, dataKey="Hour", dataValue="Messages")    
+        
 def printMessages(title, messages, includeLikes=False, maxCount=10):
     data = [["Author", "Message", "Date"]]
     if includeLikes:
@@ -307,6 +323,7 @@ if __name__ == '__main__':
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
     printStat_selfAdoration()
+    printStat_hourDistribution()
     for year in range(2017, 2021):
         printStat_bestMessages(year)
         
