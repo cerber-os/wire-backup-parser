@@ -16,16 +16,18 @@ def printExportInfo(exportInfo):
     print(table_instance.table) 
 
 #############################################
-# Conversations parsing
+# Conversation parsing
 #############################################
-ENT_TYPE_USER = 2
 ENT_TYPE_GROUP = 0
 
-UsersList = []
-GroupsList = []
+Conversations = []
 
-def parseConv(convs):
+def collectConversations(convs):
     for conv in convs:
+        # only include group convos
+        if conv['type'] != ENT_TYPE_GROUP:
+            continue
+        
         row = {
             'name': conv['name'],
             'id': conv['id'],
@@ -35,24 +37,16 @@ def parseConv(convs):
         if 'others' in conv:
             row['others'] = conv['others']
         
-        if conv['type'] == ENT_TYPE_USER:
-            UsersList.append(row)
-        elif conv['type'] == ENT_TYPE_GROUP:
-            GroupsList.append(row)
+        Conversations.append(row)
      
-def printConvInfo():    
-    conv_info = [["ID[:6]", "Name", "Amount of members"]]
-    for group in GroupsList:
-        conv_info.append([group['id'][:6], group['name'], len(group['others']) + 1])
-    table_instance = SingleTable(conv_info, "Groups")
-    print(table_instance.table) 
-
-def getGroupIdByName(Name):
-    for group in GroupsList:
-        if group['name'] == Name:
-            return group['id']
+def listConversations():    
+    data = [["ID[:6]", "Name", "Member count"]]
     
-    return None
+    for group in Conversations:
+        data.append([group['id'][:6], group['name'], len(group['others']) + 1])
+        
+    table_instance = SingleTable(data, "Group conversations")
+    print(table_instance.table)
 
 #############################################
 # Events parsing
@@ -243,8 +237,8 @@ if __name__ == '__main__':
         convs = json.load(f)
      
     printExportInfo(exportInfo)
-    parseConv(convs)
-    printConvInfo()
+    collectConversations(convs)
+    listConversations()
     
     parseEvents(events)
     grantedMostReactions()
