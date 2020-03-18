@@ -155,7 +155,22 @@ def printStat_reactsReceived():
     for event in Events:
         counts[event.origin] += len(event.reactions or [])
     
-    printCounts("Reacts received", counts, showShare=True)    
+    printCounts("Reacts received", counts, showShare=True)
+    
+def printStat_reactsDistribution():   
+    distribution = {}
+    maxLikes = 0
+    
+    for event in Events:
+        likes = len(event.reactions or [])
+        distribution[likes] = distribution.get(likes, 0) + 1
+        maxLikes = max(maxLikes, likes)
+        
+    for i in range(0, maxLikes):
+        if i not in distribution:
+            distribution[i] = 0
+    
+    printCounts("Distribution of likes", distribution, sort="key_asc", showShare=True, dataKey="Likes", dataValue="Messages")    
 
 def printStat_messagesLikedBy(user):
     msgs = filter(lambda x: user in (x.reactions or []), Events)
@@ -221,7 +236,7 @@ def printMessages(title, messages, includeLikes=False, maxCount=10):
         table_instance.justify_columns[3] = 'right'
     print(table_instance.table)
     
-def printCounts(title, data, showShare=False, ascending=False):
+def printCounts(title, data, showShare=False, sort="value_desc", dataKey="Author", dataValue="Amount"):
     entries = []
     total = 0
     
@@ -234,10 +249,11 @@ def printCounts(title, data, showShare=False, ascending=False):
             entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
         
         entries += entry
-        
-    entries = sorted(entries, key=lambda x: int(x[1]), reverse=not ascending)
     
-    header = ["Author", "Amount"]
+    if sort:
+        entries = sorted(entries, key=lambda x: int(x[sort.startswith("value_")]), reverse=sort.endswith("_desc"))
+    
+    header = [dataKey, dataValue]
     footer = ["Total", total]
     if showShare:
         header += ["Share"]
@@ -287,6 +303,7 @@ if __name__ == '__main__':
     # print stats
     printStat_reactsGiven()
     printStat_reactsReceived()
+    printStat_reactsDistribution()
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
     printStat_selfAdoration()
