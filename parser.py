@@ -138,18 +138,7 @@ def listEvents():
         print(event)
 
 #############################################
-# Image download
-#############################################
-def getAccessToken(email, password):
-    import requests
-    resp = requests.post('https://prod-nginz-https.wire.com/login', 
-        json={'email': email, 'password': password},
-        headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0', 'Content-Type': 'application/json'})
-    return json.loads(resp.text).get('access_token')
-    
-
-#############################################
-# Search engine
+# Statistics parser
 #############################################
 def printStat_reactsGiven():
     users = {}
@@ -223,6 +212,16 @@ def printStat_bestMessages(year):
             break
     table_instance.justify_columns[3] = 'right'
     print(table_instance.table)
+    
+#############################################
+# Image download
+#############################################
+def getAccessToken(email, password):
+    import requests
+    resp = requests.post('https://prod-nginz-https.wire.com/login', 
+        json={'email': email, 'password': password},
+        headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0', 'Content-Type': 'application/json'})
+    return json.loads(resp.text).get('access_token')
     
 #############################################
 # Main
