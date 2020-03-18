@@ -232,13 +232,13 @@ def mostLikedMessages(year):
 # Main
 #############################################
 if __name__ == '__main__':
-    with open('./export.json', 'r') as f:
+    with open('./export.json', 'r', encoding='utf-8') as f:
         exportInfo = json.load(f)
         
-    with open('./events.json', 'r') as f:
+    with open('./events.json', 'r', encoding='utf-8') as f:
         events = json.load(f)
     
-    with open('./conversations.json', 'r') as f:
+    with open('./conversations.json', 'r', encoding='utf-8') as f:
         convs = json.load(f)
      
     printExportInfo(exportInfo)
