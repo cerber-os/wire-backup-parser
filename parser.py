@@ -148,22 +148,21 @@ def printStat_reactsGiven():
     for event in Events:
         if event.conv_id == MI3 and event.reactions is not None:
             for key in event.reactions:
-                if event.reactions[key] == '❤️':
-                    users[key] += 1
-                else:
-                    print("Warn: Hacker")   
+                users[key] += 1
+    
     stats = []
     for user in users:
         stats.append([PREDEFINED_USERS[user], str(users[user])])
     stats = sorted(stats, key=lambda x: int(x[1]), reverse=True)
     stats = [["Username", "Count"]] + stats
     
-    table_instance = SingleTable(stats, "Given reacts")
+    table_instance = SingleTable(stats, "Reacts given")
     table_instance.justify_columns[1] = 'right'
     print(table_instance.table)
 
 def printStat_messagesLikedBy(user):
     msgs = [["Author", "Message"]]
+    
     for event in Events:
         if event.conv_id == MI3 and event.reactions is not None:
             if user in event.reactions:
@@ -171,7 +170,8 @@ def printStat_messagesLikedBy(user):
                     msgs += [[event.origin, "Asset {}".format(event.img_type)]]
                 else:
                     msgs += [[event.origin, event.message]]
-    table_instance = SingleTable(msgs, "Message liked by {}".format(PREDEFINED_USERS[user]))
+    
+    table_instance = SingleTable(msgs, "Messages liked by {}".format(PREDEFINED_USERS[user]))
     table_instance.inner_row_border = True
     table_instance.inner_heading_row_border = False
     print(table_instance.table)
@@ -196,21 +196,39 @@ def printStat_usersShare():
     print(table_instance.table)
     
 def printStat_bestMessages(year):
+    top = filter(lambda x: x.time.startswith(str(year)), Events)
+    top = sorted(top, key=lambda x: len(x.reactions or []), reverse=True)
+    
+    printMessages("Best messages of {}".format(year), top, includeLikes=True)
+    
+def printMessages(title, messages, includeLikes=False, maxCount=10):
+    data = [["Author", "Message", "Date"]]
+    if includeLikes:
+        data[0] += ["Likes"]
+        
+    table_instance = SingleTable(data, title)
     count = 0
-    top = [["Author", "Message", "Date", "Likes"]]
-    table_instance = SingleTable(top, "Most liked messages in " + year)
-    max_width = 50 
-    sort = sorted(Events, key=lambda x: len(x.reactions if x.reactions is not None else []), reverse=True)
-    for el in sort:
-        if el.conv_id == MI3 and el.time.startswith(year):
-            if el.type == EVT_TYPE_ASSET_ADD:
-                top += [[el.origin, "Asset {}".format(el.img_type), el.time, len(el.reactions)]]
-            else:
-                top += [[el.origin, '\n'.join(wrap(el.message, max_width)), el.time, len(el.reactions)]]
-            count += 1
-        if count >= 10:
+    
+    for message in messages:
+        entry = [message.origin]
+        
+        if message.type == EVT_TYPE_ASSET_ADD:
+            entry += ["Asset {}".format(message.img_type)]
+        else:
+            entry += ['\n'.join(wrap(message.message, 50))[:200]]
+        
+        entry += [message.time]
+        if includeLikes:
+            entry += [str(len(message.reactions))]
+        
+        count += 1
+        data += [entry]
+        
+        if count == maxCount:
             break
-    table_instance.justify_columns[3] = 'right'
+            
+    if (includeLikes):
+        table_instance.justify_columns[3] = 'right'
     print(table_instance.table)
     
 #############################################
@@ -249,7 +267,7 @@ if __name__ == '__main__':
     printStat_messagesLikedBy('11638a43-0074-4152-8379-11d803d9d628') # budzidlo
     printStat_usersShare()
     for year in range(2017, 2021):
-        printStat_bestMessages(str(year))
+        printStat_bestMessages(year)
         
     print("Preparing for dumping images")
     print("Wire credentials are required")
