@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import json
-from jinja2 import Template
+from jinja2 import Environment, FileSystemLoader
 from terminaltables import SingleTable
 from tqdm import tqdm
 from time import sleep
@@ -72,8 +72,10 @@ if __name__ == '__main__':
         sleep(0.50)
 
     # render html version of backup
-    with open('./templates/main.html', 'r') as f:
-        tm = Template(f.read())
-    out = tm.render(events=events, stats=stats, groups=groups)
-    with open('./report.html', 'w') as f:
+    with open('templates/main.html', 'r') as f:
+        template = Environment(loader=FileSystemLoader("templates")).from_string(f.read())
+    
+    out = template.render(events=events.getAllEvents(), stats=stats, groups=groups)
+    
+    with open('report.html', 'w') as f:
         f.write(out)
