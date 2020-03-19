@@ -1,5 +1,5 @@
 from terminaltables import SingleTable
-from events import ProxyUser
+from wirebackupparser.events import ProxyUser
 
 ENT_TYPE_GROUP = 0
 BackupOwner = None
