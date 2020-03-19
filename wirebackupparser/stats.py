@@ -19,7 +19,7 @@ class Stats:
         self.usersShare = self.calculate_usersShare()
         self.hourDistribution = self.calculate_hourDistribution()
         self.monthDistribution = self.calculate_monthDistribution()
-        self.bestMessages = self.calculate_bestMessages("2020")
+        self.bestMessages = self.calculate_bestMessages()
 
     def calculate_reactsGiven(self):
         counts = {}
@@ -70,11 +70,25 @@ class Stats:
             
         return Stats.countify(counts, share=True)
 
-    def calculate_bestMessages(self, period):
-        top = filter(lambda x: x.time.startswith(period), self.events)
-        top = sorted(top, key=lambda x: len(x.reactions), reverse=True)
+    def calculate_bestMessages(self):
+        output = {}
+        years = []
         
-        return top
+        for event in self.events:
+            time = dateutil.parser.isoparse(event.time)
+            
+            if time.year == 1970:
+                continue
+            
+            if time.year not in years:
+                years += [time.year]
+                
+        for year in years:
+            top = filter(lambda x: x.time.startswith(str(year)), self.events)
+            top = sorted(top, key=lambda x: len(x.reactions), reverse=True)[:10]
+            output[year] = top
+        
+        return output.items()
 
     def calculate_selfAdoration(self):
         counts = {}

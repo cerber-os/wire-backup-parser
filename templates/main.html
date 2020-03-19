@@ -222,7 +222,7 @@
 							</tr>
 						</tfoot>
 					</table>
-					<h3>Distibution by period</h3>
+					<h3>Distribution by period</h3>
 					<table class="count histo smalldist">
 						<thead>
 							<tr>
@@ -250,35 +250,17 @@
 					</table>
 					
 					<h2>Best of</h2>
-					<h3>Top 10 of 2020</h3>
-					<table class="messages">
-						<tr>
-							<th>1</th>
-							<td>
-								<div class="message">
-									<p class="date">2020-03-18 21:37:00</p>
-									<p class="author">Lachcim</p>
-									<p class="content">
-										Zażółć gęślą jaźń<br>
-										Pchnąć w tę łódź jeża lub ośm skrzyń fig
-									</p>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>10</th>
-							<td>
-								<div class="message">
-									<p class="date">2020-03-18 21:37:00</p>
-									<p class="author">Lachcim</p>
-									<p class="content">
-										Zażółć gęślą jaźń<br>
-										Pchnąć w tę łódź jeża lub ośm skrzyń fig
-									</p>
-								</div>
-							</td>
-						</tr>
-					</table>
+					{% for year, messages in stats.bestMessages %}
+						<h3>Top 10 of {{ year }}</h3>
+						<table class="messages">
+							{% for event in messages %}	
+							<tr>
+								<th>{{ loop.index }}</th>
+								<td>{% include "message.html" %}</td>
+							</tr>
+							{% endfor %}
+						</table>
+					{% endfor %}
 				</section>
 				
 				<section id="media">
