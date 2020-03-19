@@ -226,12 +226,17 @@
 				
 				background-color: #FAFAFA;
 			}
+			a.mediaitem > img {
+				width: 100px;
+				height: 100px;
+			}
 			div.mediacontainer.textthumb a.mediaitem {
 				width: 100px;
 				height: 100px;
 				
 				font-size: 10pt;
 				word-break: break-all;
+				color: inherit;
 				
 				display: flex;
 				align-items: center;
@@ -719,41 +724,31 @@
 				<section id="media">
 					<h2>Images</h2>
 					<div class="mediacontainer">
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
-						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						{% for event in events %}
+							{% if event.asset_kind == "image" %}
+								<a class="mediaitem" href="assets/{{ event.asset_key }}">
+									<img src="assets/thumbs/{{ event.asset_key }}">
+								</a>
+							{% endif %}
+						{% endfor %}
 					</div>
 					<h2>Remaining assets</h2>
 					<div class="mediacontainer textthumb">
-						 <a class="mediaitem" href="what.jpg">d41d8cd98f00b204e9800998ecf8427e</a>
+						{% for event in events %}
+							{% if event.asset_kind and event.asset_kind != "image" %}
+								<a class="mediaitem" href="assets/{{ event.asset_key }}">
+									{% if event.asset_kind == "audio" %}
+										Audio
+									{% elif event.asset_kind == "video" %}
+										Video
+									{% else %}
+										File
+									{% endif %}
+									<br>{{ event.asset_key }}
+								</a>
+							{% endif %}
+						{% endfor %}
+						 
 					</div>
 				</section>
 			</main>
