@@ -1,0 +1,6 @@
+jinja2
+terminaltables
+tqdm
+requests
+pycrypto
+python-dateutil
