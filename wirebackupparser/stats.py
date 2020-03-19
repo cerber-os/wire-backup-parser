@@ -10,7 +10,6 @@ class Stats:
         self.events = events.getEventsFromGroup(group)
         self.group = group
         self.users = group.getMembers()
-        print([str(u) for u in self.users])
 
     def printStat_reactsGiven(self):
         counts = {}
