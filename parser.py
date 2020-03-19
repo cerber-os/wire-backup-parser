@@ -59,7 +59,8 @@ if __name__ == '__main__':
 
     out = template.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")),
                           stats=stats,
-                          group=groups.getGroupByName("III MI"))
+                          group=groups.getGroupByName("III MI"),
+                          export=backup.getBackupInfo())
 
     with open(os.path.join(outputDir, 'report.html'), 'w', encoding='utf-8') as f:
         f.write(out)
