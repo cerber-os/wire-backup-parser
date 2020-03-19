@@ -1,22 +1,21 @@
 import os
-import magic
 from tqdm import tqdm
 from PIL import Image
 
 
 def generateThumbnail(inputFile, outputFile):
-    with magic.Magic()as m:
-        fileType = m.id_filename(inputFile)
-    if not fileType:
-        # Unknown file format
-        return
-    elif 'image data' in fileType:
+    try:
         im = Image.open(inputFile)
+        crop = min(im.size)
+        im = im.crop(((im.size[0] - crop) // 2,
+                      (im.size[1] - crop) // 2,
+                      (im.size[0] + crop) // 2,
+                      (im.size[1] + crop) // 2))
         im.thumbnail((100, 100))
         im.save(outputFile + '.png')
-    else:
-        # TODO: Add additional file formats
+    except OSError:
         return
+        # TODO: Add additional file formats
 
 
 def genThumbsForFilesInDir(inputDir, outputDir):

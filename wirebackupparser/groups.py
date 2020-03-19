@@ -21,6 +21,13 @@ class Group:
         return self.id
 
     def getMembers(self):
+        result = []
+        for user in self.members:
+            try:
+                result.append(user.name)
+            except ValueError:
+                # Return only valid users
+                pass
         return self.members
 
 
