@@ -75,6 +75,12 @@
 			section.enabled {
 				display: block;
 			}
+			section > *:first-child {
+				margin-top: 0;
+			}
+			section > *:last-child {
+				margin-bottom: 0;
+			}
 			
 			div.overviewcontrols {
 				margin-bottom: 1em;
@@ -119,6 +125,52 @@
 			}
 			span.assetlink {
 				font-style: italic;
+			}
+			
+			table {
+				max-width: 100%;
+				box-sizing: border-box;
+				
+				border-collapse: collapse;
+				border: 1px solid #D1D5DA;
+			}
+			td, th {
+				border: 1px solid #D1D5DA;
+				padding: 0.5em;
+			}
+			table th:only-of-type {
+				text-align: left;
+			}
+			table th:only-child {
+				text-align: center;
+			}
+			
+			table.count td:nth-child(2) {
+				text-align: right;
+			}
+			table.count.share td:nth-child(3) {
+				text-align: right;
+			}
+			
+			table.histo {
+				max-width: 500px;
+			}
+			table.histo tbody td:last-child {
+				border-top: none;
+				border-bottom: none;
+				
+				width: 100%;
+				max-width: 250px;
+			}
+			div.histo {
+				width: 100%;
+			}
+			div.histo > div {
+				height: 10pt;
+				background-color: #3572A5;
+			}
+			table.smalldist tbody {
+				font-size: 10pt;
 			}
 			
 			@media screen and ( max-width: 1100px ) {
@@ -208,8 +260,365 @@
 					</div>
 				</section>
 				<section id="statistics">
-					stats
+					<h2>Export info</h2>
+					<table>
+						<tr>
+							<th>Date created</th>
+							<td>2020-03-18T15:34:18.893Z</td>
+						</tr>
+						<tr>
+							<th>Username</th>
+							<td>Lachcim</td>
+						</tr>
+						<tr>
+							<th>Version</th>
+							<td>16</td>
+						</tr>
+					</table>
+					<h2>Reactions</h2>
+					<h3>Reacts given</h3>
+					<table class="count share">
+						<thead>
+							<tr>
+								<th>Author</th>
+								<th>Amount</th>
+								<th>Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>CYCUEL</td>
+								<td>426</td>
+								<td>28.14%</td>
+							</tr>
+							<tr>
+								<td>Dominik Bartkowski</td>
+								<td>357</td>
+								<td>23.58%</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>1514</td>
+								<td>100%</td>
+							</tr>
+						</tfoot>
+					</table>
+					<h3>Reacts received</h3>
+					<table class="count share">
+						<thead>
+							<tr>
+								<th>Author</th>
+								<th>Amount</th>
+								<th>Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>CYCUEL</td>
+								<td>426</td>
+								<td>28.14%</td>
+							</tr>
+							<tr>
+								<td>Dominik Bartkowski</td>
+								<td>357</td>
+								<td>23.58%</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>1514</td>
+								<td>100%</td>
+							</tr>
+						</tfoot>
+					</table>
+					<h3>Distribution of reacts</h3>
+					<table class="count share">
+						<thead>
+							<tr>
+								<th>Reacts</th>
+								<th>Messages</th>
+								<th>Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0</td>
+								<td>3438</td>
+								<td>82.92%</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>285</td>
+								<td>6.87%</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>201</td>
+								<td>4.85%</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>118</td>
+								<td>2.85%</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>65</td>
+								<td>1.57%</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>26</td>
+								<td>0.63%</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>9</td>
+								<td>0.22%</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>3</td>
+								<td>0.07%</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>1</td>
+								<td>0.02%</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>1514</td>
+								<td>100%</td>
+							</tr>
+						</tfoot>
+					</table>
+					<h3>Self-awarded reacts</h3>
+					<table class="count">
+						<thead>
+							<tr>
+								<th>Author</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>CYCUEL</td>
+								<td>426</td>
+							</tr>
+							<tr>
+								<td>Dominik Bartkowski</td>
+								<td>357</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>1514</td>
+							</tr>
+						</tfoot>
+					</table>
+					
+					<h2>Messages</h2>
+					<h3>Messages sent by user</h3>
+					<table class="count share">
+						<thead>
+							<tr>
+								<th>Author</th>
+								<th>Amount</th>
+								<th>Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>CYCUEL</td>
+								<td>426</td>
+								<td>28.14%</td>
+							</tr>
+							<tr>
+								<td>Dominik Bartkowski</td>
+								<td>357</td>
+								<td>23.58%</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>1514</td>
+								<td>100%</td>
+							</tr>
+						</tfoot>
+					</table>
+					<h3>Distribution by time</h3>
+					<table class="count histo smalldist">
+						<thead>
+							<tr>
+								<th>Hour</th>
+								<th>Messages</th>
+								<th>Histogram</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0</td>
+								<td>359</td>
+								<td><div class="histo"><div style="width: 92.05%"></div></div></td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>63</td>
+								<td><div class="histo"><div style="width: 16.15%"></div></div></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>17</td>
+								<td><div class="histo"><div style="width: 4.35%"></div></div></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>5</td>
+								<td><div class="histo"><div style="width: 1.28%"></div></div></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>4</td>
+								<td><div class="histo"><div style="width: 1.02%"></div></div></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>1</td>
+								<td><div class="histo"><div style="width: 0.25%"></div></div></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>9</td>
+								<td><div class="histo"><div style="width: 2.31%"></div></div></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>15</td>
+								<td><div class="histo"><div style="width: 3.84%"></div></div></td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>25</td>
+								<td><div class="histo"><div style="width: 6.41%"></div></div></td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>113</td>
+								<td><div class="histo"><div style="width: 28.97%"></div></div></td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>178</td>
+								<td><div class="histo"><div style="width: 45.64%"></div></div></td>
+							</tr>
+							<tr>
+								<td>11</td>
+								<td>83</td>
+								<td><div class="histo"><div style="width: 21.28%"></div></div></td>
+							</tr>
+							<tr>
+								<td>12</td>
+								<td>166</td>
+								<td><div class="histo"><div style="width: 45.56%"></div></div></td>
+							</tr>
+							<tr>
+								<td>13</td>
+								<td>136</td>
+								<td><div class="histo"><div style="width: 34.87%"></div></div></td>
+							</tr>
+							<tr>
+								<td>14</td>
+								<td>182</td>
+								<td><div class="histo"><div style="width: 46.15%"></div></div></td>
+							</tr>
+							<tr>
+								<td>15</td>
+								<td>259</td>
+								<td><div class="histo"><div style="width: 66.41%"></div></div></td>
+							</tr>
+							<tr>
+								<td>16</td>
+								<td>390</td>
+								<td><div class="histo"><div style="width: 100%"></div></div></td>
+							</tr>
+							<tr>
+								<td>17</td>
+								<td>344</td>
+								<td><div class="histo"><div style="width: 88.21%"></div></div></td>
+							</tr>
+							<tr>
+								<td>18</td>
+								<td>254</td>
+								<td><div class="histo"><div style="width: 65.12%"></div></div></td>
+							</tr>
+							<tr>
+								<td>19</td>
+								<td>302</td>
+								<td><div class="histo"><div style="width: 77.46%"></div></div></td>
+							</tr>
+							<tr>
+								<td>20</td>
+								<td>334</td>
+								<td><div class="histo"><div style="width: 85.64%"></div></div></td>
+							</tr>
+							<tr>
+								<td>21</td>
+								<td>358</td>
+								<td><div class="histo"><div style="width: 91.79%"></div></div></td>
+							</tr>
+							<tr>
+								<td>22</td>
+								<td>238</td>
+								<td><div class="histo"><div style="width: 61.02%"></div></div></td>
+							</tr>
+							<tr>
+								<td>23</td>
+								<td>275</td>
+								<td><div class="histo"><div style="width: 70.51%"></div></div></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>4146</td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
+					<h3>Distibution by period</h3>
+					<table class="count histo smalldist">
+						<thead>
+							<tr>
+								<th>Period</th>
+								<th>Messages</th>
+								<th>Histogram</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2020</td>
+								<td>4146</td>
+								<td><div class="histo"><div style="width: 100%"></div></div></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Total</th>
+								<td>4146</td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
 				</section>
+				
 				<section id="media">
 					media
 				</section>
