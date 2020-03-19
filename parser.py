@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # export info
     printExportInfo(exportInfo)
     import wirebackupparser.groups
-    wirebackupparsergroups.BackupOwner = exportInfo['user_id']
+    wirebackupparser.groups.BackupOwner = exportInfo['user_id']
     
     # converastion info
     groups = Groups(convs)
