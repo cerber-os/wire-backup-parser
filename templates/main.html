@@ -286,7 +286,7 @@
 									{% else %}
 										File
 									{% endif %}
-									<br>{{ event.asset_key }}
+									<br>{% if event.asset_name %} {{ event.asset_name }} {% else %} {{ event.asset_key }} {% endif %}
 								</a>
 							{% endif %}
 						{% endfor %}

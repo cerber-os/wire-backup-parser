@@ -81,6 +81,7 @@ class Event:
         if self.type == EVT_TYPE_MSG_ADD:
             self.message = event['data']['content']
         elif self.type == EVT_TYPE_ASSET_ADD:
+            self.asset_name = event['data'].get('info', {}).get('name')
             self.asset_type = event['data']['content_type']
             self.asset_sha256 = event['data'].get('sha256')
             self.asset_otr_key = event['data'].get('otr_key')
@@ -102,7 +103,7 @@ class Event:
         if self.type == EVT_TYPE_MSG_ADD:
             return "[{}] MSG <{}>: {}".format(self.time, self.origin, self.message)
         elif self.type == EVT_TYPE_ASSET_ADD:
-            return "[{}] IMAGE <{}> ID<{}>".format(self.time, self.origin, self.asset_token)
+            return "[{}] ASSET <{}> ID<{}>".format(self.time, self.origin, self.asset_token)
         elif self.type == EVT_TYPE_KNOCK:
             return "[{}] PING <{}>".format(self.time, self.origin)
         else:
