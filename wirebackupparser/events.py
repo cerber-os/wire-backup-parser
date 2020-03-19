@@ -77,6 +77,7 @@ class Event:
             self.message = event['data']['content']
         elif self.type == EVT_TYPE_ASSET_ADD:
             self.asset_type = event['data']['content_type']
+            self.is_image = self.asset_type.startswith("image/")
             self.asset_sha256 = event['data'].get('sha256')
             self.asset_otr_key = event['data'].get('otr_key')
             self.asset_key = event['data'].get('key', '')
