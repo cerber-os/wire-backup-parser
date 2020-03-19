@@ -72,10 +72,10 @@ if __name__ == '__main__':
         sleep(0.50)
 
     # render html version of backup
-    with open('templates/main.html', 'r') as f:
+    with open('templates/main.html', 'r', encoding='utf-8') as f:
         template = Environment(loader=FileSystemLoader("templates")).from_string(f.read())
     
     out = template.render(events=events.getAllEvents(), stats=stats, groups=groups)
     
-    with open('report.html', 'w') as f:
+    with open('report.html', 'w', encoding='utf-8') as f:
         f.write(out)
