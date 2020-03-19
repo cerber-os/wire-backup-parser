@@ -42,6 +42,37 @@ function paginate() {
 		for (var i = 0; i < perPage; i++)
 			messages.children[skippedElements + i].setAttribute("data-shown", "data-shown");
 }
+function showMessage(messageId) {
+	var sort = document.getElementById("sort").value;
+	var perPage = Number(document.getElementById("perpage").value);
+	var messages = document.getElementById("messages");
+	
+	var message = document.querySelector("#overview [data-id=\"" + messageId + "\"]");
+	
+	if (sort == "desc")
+		for (var i = 0; i < messages.children.length; i++) {
+			if (messages.children[messages.children.length - 1 - i] == message) {
+				var page = Math.floor(i / perPage) + 1;
+				break;
+			}
+		}
+	else
+		for (var i = 0; i < messages.children.length; i++) {
+			if (messages.children[i] == message) {
+				var page = Math.floor(i / perPage) + 1;
+				break;
+			}
+		}
+		
+	document.getElementById("page").value = page;
+	paginate();
+		
+	var form = document.getElementById("screenselect");
+	form.elements.screen.value = "overview";
+	switchScreen();
+	
+	setTimeout(function() { message.scrollIntoView(); }, 100);
+}
 
 window.onload = function() {
 	switchScreen();

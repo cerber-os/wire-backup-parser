@@ -188,12 +188,11 @@ table.messages th {
 	text-align: center;
 	
 	width: 1px;
+	
+	cursor: pointer;
 }
 table.messages td {
 	padding: 0;
-}
-table.messages tr {
-	cursor: pointer;
 }
 table.messages tr:nth-child(even) div.message {
 	background-color: #F2F2F2;

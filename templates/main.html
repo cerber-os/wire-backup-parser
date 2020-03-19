@@ -255,7 +255,7 @@
 						<table class="messages">
 							{% for event in messages %}	
 							<tr>
-								<th>{{ loop.index }}</th>
+								<th onclick="showMessage('{{ event.id }}')">{{ loop.index }}</th>
 								<td>{% include "message.html" %}</td>
 							</tr>
 							{% endfor %}
