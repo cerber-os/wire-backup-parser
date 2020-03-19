@@ -5,10 +5,10 @@ from jinja2 import Template
 from terminaltables import SingleTable
 from tqdm import tqdm
 from time import sleep
-from wireAPI import WireApi
-from groups import Groups, BackupOwner
-from events import Events
-from stats import Stats
+from wirebackupparser.wireAPI import WireApi
+from wirebackupparser.groups import Groups, BackupOwner
+from wirebackupparser.events import Events
+from wirebackupparser.stats import Stats
 
 
 def printExportInfo(exportInfo):
@@ -37,8 +37,8 @@ if __name__ == '__main__':
     
     # export info
     printExportInfo(exportInfo)
-    import groups
-    groups.BackupOwner = exportInfo['user_id']
+    import wirebackupparser.groups
+    wirebackupparsergroups.BackupOwner = exportInfo['user_id']
     
     # converastion info
     groups = Groups(convs)
