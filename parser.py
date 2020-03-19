@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     # generate statistics
     stats = Stats(events, groups.getGroupByName(args.group))
-    # stats.dumpVariousStats()
+    stats.calculateStats()
 
     events.downloadAllAssetsInGroup(group=groups.getGroupByName(args.group),
                                     assetsDir=assetsDir)

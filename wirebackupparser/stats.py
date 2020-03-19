@@ -10,8 +10,18 @@ class Stats:
         self.events = events.getEventsFromGroup(group)
         self.group = group
         self.users = group.getMembers()
+        
+    def calculateStats(self):
+        self.reactsGiven = self.calculate_reactsGiven()
+        self.reactsReceived = self.calculate_reactsReceived()
+        self.reactsDistribution = self.calculate_reactsDistribution()
+        self.selfAdoration = self.calculate_selfAdoration()
+        self.usersShare = self.calculate_usersShare()
+        self.hourDistribution = self.calculate_hourDistribution()
+        self.monthDistribution = self.calculate_monthDistribution()
+        self.bestMessages = self.calculate_bestMessages("2020")
 
-    def printStat_reactsGiven(self):
+    def calculate_reactsGiven(self):
         counts = {}
 
         for user in self.users:
@@ -20,10 +30,10 @@ class Stats:
         for event in self.events:
             for user in event.reactions:
                 counts[str(user)] += 1
+                
+        return Stats.countify(counts, share=True)
 
-        self.printCounts("Reacts given", counts, showShare=True)
-
-    def printStat_reactsReceived(self):
+    def calculate_reactsReceived(self):
         counts = {}
 
         for user in self.users:
@@ -31,10 +41,10 @@ class Stats:
 
         for event in self.events:
             counts[str(event.origin)] += len(event.reactions)
-
-        self.printCounts("Reacts received", counts, showShare=True)
-
-    def printStat_reactsDistribution(self):
+            
+        return Stats.countify(counts, share=True)
+            
+    def calculate_reactsDistribution(self):
         distribution = {}
         maxLikes = 0
 
@@ -46,15 +56,10 @@ class Stats:
         for i in range(0, maxLikes):
             if i not in distribution:
                 distribution[i] = 0
+                
+        return distribution
 
-        self.printCounts("Distribution of likes", distribution, sort="key_asc", showShare=True, dataKey="Likes",
-                         dataValue="Messages")
-
-    def printStat_messagesLikedBy(self, user):
-        msgs = filter(lambda x: user in x.reactions, self.events)
-        self.printMessages("Messages liked by {}".format(str(user)), msgs)
-
-    def printStat_usersShare(self):
+    def calculate_usersShare(self):
         counts = {}
 
         for user in self.users:
@@ -62,15 +67,16 @@ class Stats:
 
         for event in self.events:
             counts[str(event.origin)] += 1
+            
+        return counts
 
-        self.printCounts("Users share in messages", counts, showShare=True)
-
-    def printStat_bestMessages(self, year):
-        top = filter(lambda x: x.time.startswith(str(year)), self.events)
+    def calculate_bestMessages(self, period):
+        top = filter(lambda x: x.time.startswith(period), self.events)
         top = sorted(top, key=lambda x: len(x.reactions), reverse=True)
-        self.printMessages("Best messages of {}".format(year), top, includeLikes=True)
+        
+        return top
 
-    def printStat_selfAdoration(self):
+    def calculate_selfAdoration(self):
         counts = {}
 
         for user in self.users:
@@ -79,9 +85,10 @@ class Stats:
         for event in self.events:
             if event.origin in event.reactions:
                 counts[str(event.origin)] += 1
-        self.printCounts("Self-awarded likes", counts)
+                
+        return counts
 
-    def printStat_hourDistribution(self):
+    def calculate_hourDistribution(self):
         distribution = {}
         for i in range(0, 24):
             distribution[i] = 0
@@ -92,12 +99,10 @@ class Stats:
             hour = hour.hour
 
             distribution[hour] += 1
+            
+        return distribution
 
-        self.printCounts("Distirbution by time", distribution, sort="key_asc", showShare=True, histoShare=True,
-                         dataKey="Hour",
-                         dataValue="Messages")
-
-    def printStat_monthDistribution(self):
+    def calculate_monthDistribution(self):
         distribution = {}
         for event in self.events:
             time = dateutil.parser.isoparse(event.time)
@@ -106,97 +111,31 @@ class Stats:
             time = time.strftime("%Y-%m")
 
             distribution[time] = distribution.get(time, 0) + 1
-
-        self.printCounts("Distirbution by period", distribution, sort="key_alpha_asc", showShare=True, histoShare=True,
-                         dataKey="Period", dataValue="Messages")
-
+            
+        return distribution
+    
     @staticmethod
-    def printMessages(title, messages, includeLikes=False, maxCount=10):
-        data = [["Author", "Message", "Date"]]
-        if includeLikes:
-            data[0] += ["Likes"]
-
-        table_instance = SingleTable(data, title)
-        count = 0
-
-        for message in messages:
-            entry = [message.origin]
-
-            if message.type == EVT_TYPE_ASSET_ADD:
-                entry += ["Asset {}".format(message.asset_type)]
-            else:
-                entry += ['\n'.join(wrap(message.message, 50))[:200]]
-
-            entry += [message.time]
-            if includeLikes:
-                entry += [str(len(message.reactions))]
-
-            count += 1
-            data += [entry]
-
-            if count == maxCount:
-                break
-
-        if includeLikes:
-            table_instance.justify_columns[3] = 'right'
-        print(table_instance.table)
-
-    @staticmethod
-    def printCounts(title, data, showShare=False, histoShare=False, sort="value_desc", dataKey="Author",
-                    dataValue="Amount"):
-        entries = []
+    def countify(data, sortField=1, reverse=True, share=False, histo=False):
+        output = []
         total = 0
         maxValue = 0
-
+        
         for key in data:
             total += data[key]
             maxValue = max(maxValue, data[key])
-
+            
         for key in data:
             entry = [[key, data[key]]]
-            if showShare:
-                if histoShare:
-                    percentage = data[key] / total
-                    normalized = percentage / (maxValue / total)
+            
+            if share:
+                entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
+            if histo:
+                percentage = data[key] / total
+                normalized = percentage / (maxValue / total)
 
-                    entry[0] += [u"\u2588" * round(normalized * 25)]
-                else:
-                    entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
-
-            entries += entry
-
-        if sort:
-            if "_alpha_" in sort:
-                sortfun = lambda x: str(x[sort.startswith("value_")])
-            else:
-                sortfun = lambda x: int(x[sort.startswith("value_")])
-
-            entries = sorted(entries, key=sortfun, reverse=sort.endswith("_desc"))
-
-        header = [dataKey, dataValue]
-        footer = ["Total", total]
-        if showShare:
-            header += ["Share"]
-            footer += ["100%"]
-        entries = [header] + entries + [footer]
-
-        table_instance = SingleTable(entries, title)
-        table_instance.justify_columns[1] = "right"
-        table_instance.justify_columns[2] = "right" if not histoShare else "left"
-        table_instance.inner_footing_row_border = True
-        print(table_instance.table)
-
-    def dumpVariousStats(self):
-        self.printStat_reactsGiven()
-        self.printStat_reactsReceived()
-        self.printStat_reactsDistribution()
-        try:
-            self.printStat_messagesLikedBy(getUserByID('11638a43-0074-4152-8379-11d803d9d628'))  # budzidlo
-        except KeyError:
-            print("No such user {}".format('11638a43-0074-4152-8379-11d803d9d628'))
-        self.printStat_usersShare()
-        self.printStat_selfAdoration()
-        self.printStat_hourDistribution()
-        self.printStat_monthDistribution()
-        for year in range(2017, 2021):
-            self.printStat_bestMessages(year)
+                entry[0] += [u"\u2588" * round(normalized * 25)]
+                
+            entry[0] += [total]
+            output += entry
+        
+        return sorted(output, key=lambda x: int(x[sortField]), reverse=reverse)
