@@ -75,7 +75,7 @@ if __name__ == '__main__':
     with open('templates/main.html', 'r', encoding='utf-8') as f:
         template = Environment(loader=FileSystemLoader("templates")).from_string(f.read())
     
-    out = template.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")), stats=stats, groups=groups)
+    out = template.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")), stats=stats, group=groups.getGroupByName("III MI"))
     
     with open('report.html', 'w', encoding='utf-8') as f:
         f.write(out)

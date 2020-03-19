@@ -1,0 +1,38 @@
+<div class="message">
+	<p class="date">{{ event.time }}</p>
+	<p class="author">{{ event.origin }}</p>
+	<p class="content">
+		{% if event.type == "conversation.message-add" %}
+			{{ event.message|e }}
+		{% elif event.type == "conversation.asset-add" %}
+			{% if event.is_image %}
+				<a href="assets/{{ event.asset_key }}" target="_blank">
+					<img src="assets/{{ event.asset_key }}">
+				</a>
+			{% else %}
+				<span class="eventdescription">
+					Asset <a href="assets/{{ event.asset_key }}">{{ event.asset_key }}</a>
+				</span>
+			{% endif %}
+		</span>
+		{% elif event.type == "conversation.delete-everywhere" %}
+			<span class="eventdescription">Deleted message</span>
+		{% elif event.type == "conversation.knock" %}
+			<span class="eventdescription">Pinged</span>
+		{% elif event.type == "conversation.group-creation" %}
+			<span class="eventdescription">Created group</span>
+		{% else %}
+			<span style="color: red">{{ event.type }}</span>
+		{% endif %}
+	</p>
+	{% if event.reactions|length != 0 %}
+		<p class="likes">
+			{% if event.reactions|length <= 3 %}
+				&#9825; from
+			{% else %}
+				&#9825; from {{ event.reactions|length }}:
+			{% endif %}
+			{{ event.reactions|join(', ') }}
+		</p>
+	{% endif %}
+</div>

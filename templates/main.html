@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{ convname }} - Summary</title>
+		<title>{{ group.name }} - Summary</title>
 		
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,500,700&display=swap" rel="stylesheet">
 		<meta name="viewport" content="width=device-width">
@@ -107,7 +107,7 @@
 			div.message p.content {
 				margin-top: 0.5em;
 			}
-			div.message p.content > img {
+			div.message p.content img {
 				max-width: 100%;
 				max-height: 500px;
 			}
@@ -123,7 +123,7 @@
 			input.page {
 				width: 3em;
 			}
-			span.assetlink {
+			span.eventdescription {
 				font-style: italic;
 			}
 			
@@ -243,7 +243,7 @@
 	</head>
 	<body>
 		<div class="main">
-			<h1>{{ convname }} - Summary</h1>
+			<h1>{{ group.name }} - Summary</h1>
 			<nav>
 				<form onchange="switchScreen(this)">
 					<input type="radio" name="screen" value="overview" id="screen_overview" checked>
@@ -269,41 +269,9 @@
 						</select>
 					</div>
 					<div id="messages">
-						<div class="message">
-							<p class="date">2020-03-18 21:37:00</p>
-							<p class="author">Lachcim</p>
-							<p class="content">
-								Zażółć gęślą jaźń<br>
-								Pchnąć w tę łódź jeża lub ośm skrzyń fig
-							</p>
-						</div>
-						<div class="message">
-							<p class="date">2017-10-13 12:34:56</p>
-							<p class="author">Przemysław Buczkowski</p>
-							<p class="content">
-								Na matematyce się znam.
-							</p>
-							<p class="likes">
-								&#9825 Przemysław Buczkowski, Lachcim, Mistrz Polikarp, Śmierć
-							</p>
-						</div>
-						<div class="message">
-							<p class="date">2020-03-18 21:37:00</p>
-							<p class="author">Mistrz Polikarp</p>
-							<p class="content">
-								<img src="https://1mi.pl/~lachcim/memy,%20kt%c3%b3re%20nigdy%20nie%20wesz%c5%82y%20do%20cyrkulacji/logos.png">
-							</p>
-						</div>
-						<div class="message">
-							<p class="date">2017-10-13 12:34:56</p>
-							<p class="author">Śmierć</p>
-							<p class="content">
-								<span class="assetlink">
-									Asset
-									<a href="assets/what.jpg">d41d8cd98f00b204e9800998ecf8427e</a>
-								</span>
-							</p>
-						</div>
+						{% for event in events %}
+							{% include "message.html" %}
+						{% endfor %}
 					</div>
 					<div class="pagecontrols">
 						Page
