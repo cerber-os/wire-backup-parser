@@ -173,6 +173,25 @@
 				font-size: 10pt;
 			}
 			
+			table.messages {
+				width: 100%;
+			}
+			table.messages th {
+				font-size: 20pt;
+				text-align: center;
+				
+				width: 1px;
+			}
+			table.messages td {
+				padding: 0;
+			}
+			table.messages tr {
+				cursor: pointer;
+			}
+			table.messages tr:nth-child(even) div.message {
+				background-color: #F2F2F2;
+			}
+			
 			@media screen and ( max-width: 1100px ) {
 				div.main {
 					margin: 0 auto;
@@ -616,6 +635,37 @@
 								<td></td>
 							</tr>
 						</tfoot>
+					</table>
+					
+					<h2>Best of</h2>
+					<h3>Top 10 of 2020</h3>
+					<table class="messages">
+						<tr>
+							<th>1</th>
+							<td>
+								<div class="message">
+									<p class="date">2020-03-18 21:37:00</p>
+									<p class="author">Lachcim</p>
+									<p class="content">
+										Zażółć gęślą jaźń<br>
+										Pchnąć w tę łódź jeża lub ośm skrzyń fig
+									</p>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>10</th>
+							<td>
+								<div class="message">
+									<p class="date">2020-03-18 21:37:00</p>
+									<p class="author">Lachcim</p>
+									<p class="content">
+										Zażółć gęślą jaźń<br>
+										Pchnąć w tę łódź jeża lub ośm skrzyń fig
+									</p>
+								</div>
+							</td>
+						</tr>
 					</table>
 				</section>
 				
