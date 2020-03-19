@@ -204,12 +204,6 @@
 				background-color: #F2F2F2;
 			}
 			
-			@media screen and ( max-width: 1100px ) {
-				div.main {
-					margin: 0 auto;
-				}
-			}
-			
 			div.mediacontainer {
 				display: flex;
 				flex-wrap: wrap;
@@ -218,7 +212,7 @@
 				
 				min-height: 500px;
 				height: 500px;
-				overflow-y: scroll;
+				overflow-y: auto;
 				resize: vertical;
 				
 				background-color: #F2F2F2;
@@ -246,6 +240,34 @@
 				display: flex;
 				align-items: center;
 				text-align: center;
+			}
+			
+			@media screen and ( max-width: 1100px ) {
+				div.main {
+					margin: 0 auto;
+				}
+			}
+			
+			@media print {
+				div.main {
+					margin: 0 auto;
+				}
+				nav {
+					display: none;
+				}
+				section {
+					display: block;
+				}
+				section:not(:first-child) {
+					margin-top: 1em;
+				}
+				a.print {
+					display: none;
+				}
+				div.mediacontainer {
+					height: auto;
+					min-height: auto;
+				}
 			}
 		</style>
 		
@@ -322,6 +344,7 @@
 							<option value="asc">Oldest first</option>
 						</select>
 						<select id="perpage">
+							<option value="10">10 per page</option>
 							<option value="50">50 per page</option>
 							<option value="100">100 per page</option>
 							<option value="200">200 per page</option>
@@ -762,7 +785,7 @@
 				</section>
 			</main>
 			<footer>
-				<a href="#" onclick="window.print(); return false">Print</a>
+				<a class="print" href="#" onclick="window.print(); return false">Print</a>
 				<a class="credits" href="https://github.com/cerber-os/wire-backup-parser" target="_blank">
 					Wire Backup Parser by Armia Prezesa
 				</a>
