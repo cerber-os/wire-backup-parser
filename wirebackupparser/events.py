@@ -142,6 +142,7 @@ class Events:
         return [e for e in self.getEventsFromGroup(group) if e.type == EVT_TYPE_ASSET_ADD and e.asset_key]
 
     def downloadAllAssetsInGroup(self, group, assetsDir):
+        print("Downloading assets...")
         assets = self.getAllAssetsInGroup(group)
         for event in tqdm(assets):
             fileName = os.path.join(assetsDir, event.asset_key.replace('/', ''))

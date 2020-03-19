@@ -7,6 +7,7 @@ from wirebackupparser.groups import Groups
 from wirebackupparser.events import Events
 from wirebackupparser.stats import Stats
 from wirebackupparser.backupFile import WireBackup
+from wirebackupparser.utils import genThumbsForFilesInDir
 
 
 def createWorkingDir(arg):
@@ -16,7 +17,10 @@ def createWorkingDir(arg):
     assetsDir = os.path.join(outputDir, 'assets')
     if not os.path.exists(assetsDir):
         os.mkdir(assetsDir)
-    return outputDir, assetsDir
+    thumbsDir = os.path.join(assetsDir, 'thumbnails')
+    if not os.path.exists(thumbsDir):
+        os.mkdir(thumbsDir)
+    return outputDir, assetsDir, thumbsDir
 
 
 if __name__ == '__main__':
@@ -26,7 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', help='directory in which output files should be saved', default=os.curdir)
     args = parser.parse_args()
 
-    outputDir, assetsDir = createWorkingDir(args.output)
+    outputDir, assetsDir, thumbsDir = createWorkingDir(args.output)
 
     backup = WireBackup(args.file)
     session = WireApi(outputDir=outputDir)
@@ -41,6 +45,7 @@ if __name__ == '__main__':
 
     events.downloadAllAssetsInGroup(group=groups.getGroupByName(args.group),
                                     assetsDir=assetsDir)
+    genThumbsForFilesInDir(assetsDir, thumbsDir)
 
     # render html version of backup
     with open('templates/main.html', 'r', encoding='utf-8') as f:
@@ -53,4 +58,4 @@ if __name__ == '__main__':
     with open(os.path.join(outputDir, 'report.html'), 'w', encoding='utf-8') as f:
         f.write(out)
 
-    print("Generated raport: file://{}".format(os.path.abspath(os.path.join(outputDir, "report.html"))))
+    print("Generated report: file://{}".format(os.path.abspath(os.path.join(outputDir, "report.html"))))

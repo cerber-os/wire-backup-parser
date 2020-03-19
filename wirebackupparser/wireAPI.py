@@ -72,9 +72,8 @@ class WireApi:
         return self._decryptImage(resp.content, assetKey)
 
     def getUsersList(self, usersIDs, retryOn403=True):
-        usersPath = os.path.join(self.outputDir, 'users.json')
-        if os.path.exists(usersPath):
-            with open(usersPath, 'r') as f:
+        if os.path.exists('./users.json'):
+            with open('./users.json', 'r') as f:
                 return json.load(f)
         if not self.access_token:
             self._login()
@@ -94,6 +93,6 @@ class WireApi:
         except json.JSONDecodeError:
             raise ConnectionError("Invalid response from server: {}".format(resp.text))
 
-        with open(usersPath, 'w') as f:
+        with open('./users.json', 'w') as f:
             json.dump(respJson, f)
         return respJson
