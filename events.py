@@ -21,7 +21,7 @@ class User:
     def fillFromDict(self, d):
         for user in d:
             if self.id == user['id']:
-                self.name = user.get('handle', '<unknown>')
+                self.name = user.get('name', user.get('handler', self.id))
                 # TODO: user['picture'] and user['assets']
                 return
         raise KeyError("Cannot find user {} in provided dict".format(self.id))
