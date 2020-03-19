@@ -1,3 +1,4 @@
+import getpass
 import os
 import requests
 import json
@@ -6,12 +7,19 @@ from binascii import hexlify, unhexlify
 
 
 class WireApi:
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    def __init__(self):
+        self.email = None
+        self.password = None
         self.access_token = None
 
+    def _loginPrompt(self):
+        print("Wire credentials are required to continue")
+        self.email = input("Email: ")
+        self.password = getpass.getpass()
+
     def _login(self):
+        if not self.access_token:
+            self._loginPrompt()
         resp = requests.post('https://prod-nginz-https.wire.com/login',
                              json={'email': self.email, 'password': self.password},
                              headers={

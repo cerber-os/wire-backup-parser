@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import getpass
 import os
 import json
 from terminaltables import SingleTable
@@ -43,10 +42,7 @@ if __name__ == '__main__':
     groups.dumpGroups()
 
     # login via WireApi
-    print("Wire credentials are required to continue")
-    email = input("Email: ")
-    password = getpass.getpass()
-    session = WireApi(email, password)
+    session = WireApi()
 
     # collect and filter events
     events = Events(events, session)
