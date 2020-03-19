@@ -245,7 +245,8 @@
 		</style>
 		
 		<script type="text/javascript">
-			function switchScreen(form) {
+			function switchScreen() {
+				var form = document.getElementById("screenselect");
 				document.querySelector("section.enabled").className = "";
 				
 				var screen = form.elements.screen.value;
@@ -289,14 +290,17 @@
 						messages.children[skippedElements + i].setAttribute("data-shown", "data-shown");
 			}
 			
-			window.onload = paginate;
+			window.onload = function() {
+				switchScreen();
+				paginate();
+			}
 		</script>
 	</head>
 	<body>
 		<div class="main">
 			<h1>{{ group.name }} - Summary</h1>
 			<nav>
-				<form onchange="switchScreen(this)">
+				<form id="screenselect" onchange="switchScreen()">
 					<input type="radio" name="screen" value="overview" id="screen_overview" checked>
 					<label for="screen_overview">Overview</label>
 					<input type="radio" name="screen" value="statistics" id="screen_statistics">
@@ -726,7 +730,7 @@
 					<div class="mediacontainer">
 						{% for event in events %}
 							{% if event.asset_kind == "image" %}
-								<a class="mediaitem" href="assets/{{ event.asset_key }}">
+								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
 									<img src="assets/thumbs/{{ event.asset_key }}">
 								</a>
 							{% endif %}
@@ -736,7 +740,7 @@
 					<div class="mediacontainer textthumb">
 						{% for event in events %}
 							{% if event.asset_kind and event.asset_kind != "image" %}
-								<a class="mediaitem" href="assets/{{ event.asset_key }}">
+								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
 									{% if event.asset_kind == "audio" %}
 										Audio
 									{% elif event.asset_kind == "video" %}
