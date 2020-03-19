@@ -1,3 +1,7 @@
+import os
+from tqdm import tqdm
+from time import sleep
+
 EVT_TYPE_MSG_ADD = 'conversation.message-add'
 EVT_TYPE_ASSET_ADD = 'conversation.asset-add'
 EVT_TYPE_KNOCK = 'conversation.knock'
@@ -118,11 +122,11 @@ class Events:
                 Users.append(User(e.origin.id))
         self.events = sorted(self.events, key=lambda x: x.time)
 
-        if session:
-            ids = [user.id for user in Users]
-            d = session.getUsersList(ids)
-            for user in Users:
-                user.fillFromDict(d)
+        self.session = session
+        ids = [user.id for user in Users]
+        d = session.getUsersList(ids)
+        for user in Users:
+            user.fillFromDict(d)
 
     def getAllEvents(self):
         return self.events
@@ -136,3 +140,18 @@ class Events:
 
     def getAllAssetsInGroup(self, group):
         return [e for e in self.getEventsFromGroup(group) if e.type == EVT_TYPE_ASSET_ADD and e.asset_key]
+
+    def downloadAllAssetsInGroup(self, group, assetsDir):
+        assets = self.getAllAssetsInGroup(group)
+        for event in tqdm(assets):
+            fileName = os.path.join(assetsDir, event.asset_key.replace('/', ''))
+            if os.path.exists(fileName) or not self.session.isOtrKeyValid(event.asset_otr_key):
+                continue
+
+            key = self.session.convertOtrKey(event.asset_otr_key)
+            asset = self.session.downloadAsset(event.asset_key, key, event.asset_token)
+            with open(fileName, 'wb') as f:
+                f.write(asset)
+
+            # Prevent overloading remote server
+            sleep(0.50)
