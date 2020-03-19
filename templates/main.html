@@ -211,8 +211,8 @@
 				align-content: flex-start;
 				font-size: 0;
 				
-				min-height: 500px;
-				height: 500px;
+				min-height: 350px;
+				height: 350px;
 				overflow-y: auto;
 				resize: vertical;
 				
@@ -751,17 +751,17 @@
 				<section id="media">
 					<h2>Images</h2>
 					<div class="mediacontainer">
-						{% for event in events %}
+						{% for event in events|reverse %}
 							{% if event.asset_kind == "image" %}
 								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
-									<img src="assets/thumbs/{{ event.asset_key }}">
+									<img src="assets/thumbnails/{{ event.asset_key }}.png">
 								</a>
 							{% endif %}
 						{% endfor %}
 					</div>
 					<h2>Remaining assets</h2>
 					<div class="mediacontainer textthumb">
-						{% for event in events %}
+						{% for event in events|reverse %}
 							{% if event.asset_kind and event.asset_kind != "image" %}
 								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
 									{% if event.asset_kind == "audio" %}
