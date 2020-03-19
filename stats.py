@@ -189,7 +189,10 @@ class Stats:
         self.printStat_reactsGiven()
         self.printStat_reactsReceived()
         self.printStat_reactsDistribution()
-        self.printStat_messagesLikedBy(getUserByID('11638a43-0074-4152-8379-11d803d9d628'))  # budzidlo
+        try:
+            self.printStat_messagesLikedBy(getUserByID('11638a43-0074-4152-8379-11d803d9d628'))  # budzidlo
+        except KeyError:
+            print("No such user {}".format('11638a43-0074-4152-8379-11d803d9d628'))
         self.printStat_usersShare()
         self.printStat_selfAdoration()
         self.printStat_hourDistribution()
