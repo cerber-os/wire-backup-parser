@@ -68,6 +68,7 @@ class ProxyUser:
 class Event:
     def __init__(self, event):
         self.conv_id = event['conversation']
+        self.id = event.get('id')
         self.origin = ProxyUser(event['from'])
         self.time = event['time']
         self.type = event['type']
