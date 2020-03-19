@@ -61,8 +61,8 @@ class WireApi:
                             headers={
                                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0'})
         if resp.status_code == 404:
-            return None
-        elif resp.status_code == 403 and retryOn403:
+            return b"<missing>"
+        elif resp.status_code == 401 and retryOn403:
             # Access token can expire before download of all assets finishes
             self._login()
             self.downloadAsset(assetID, assetKey, assetToken, False)
@@ -83,7 +83,7 @@ class WireApi:
                             headers={
                                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0',
                                 'Authorization': 'Bearer ' + self.access_token})
-        if resp.status_code == 403 and retryOn403:
+        if resp.status_code == 401 and retryOn403:
             self._login()
             self.getUsersList(usersIDs, False)
         elif resp.status_code != 200:
