@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 import argparse
 import os
+
 from jinja2 import Environment, FileSystemLoader
-from wirebackupparser.wireAPI import WireApi
-from wirebackupparser.groups import Groups
-from wirebackupparser.events import Events
-from wirebackupparser.stats import Stats
+
 from wirebackupparser.backupFile import WireBackup
+from wirebackupparser.events import Events
+from wirebackupparser.groups import Groups
+from wirebackupparser.stats import Stats
 from wirebackupparser.utils import genThumbsForFilesInDir
+from wirebackupparser.wireAPI import WireApi
 
 
 def createWorkingDir(arg):
@@ -46,11 +48,12 @@ if __name__ == '__main__':
     stats = Stats(events, groups.getGroupByName(args.group))
     stats.calculateStats()
 
+    # Download assets
     events.downloadAllAssetsInGroup(group=groups.getGroupByName(args.group),
                                     assetsDir=assetsDir)
     genThumbsForFilesInDir(assetsDir, thumbsDir)
 
-    # render html version of backup
+    # Render html report
     with open('templates/main.html', 'r', encoding='utf-8') as f:
         template = Environment(loader=FileSystemLoader("templates")).from_string(f.read())
 
