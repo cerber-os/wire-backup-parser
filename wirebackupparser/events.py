@@ -10,11 +10,11 @@ Users = []
 
 
 # TODO: Move it to class
-def getUserByID(id):
+def getUserByID(uid):
     for user in Users:
-        if user.id == id:
+        if user.id == uid:
             return user
-    raise KeyError("Cannot find user {} in provided dict".format(id))
+    raise KeyError("Cannot find user {} in provided dict".format(uid))
 
 
 class User:
