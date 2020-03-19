@@ -7,10 +7,11 @@ from binascii import hexlify, unhexlify
 
 
 class WireApi:
-    def __init__(self):
+    def __init__(self, outputDir):
         self.email = None
         self.password = None
         self.access_token = None
+        self.outputDir = outputDir
 
     def _loginPrompt(self):
         print("Wire credentials are required to continue")
@@ -71,8 +72,9 @@ class WireApi:
         return self._decryptImage(resp.content, assetKey)
 
     def getUsersList(self, usersIDs, retryOn403=True):
-        if os.path.exists('./users.json'):
-            with open('./users.json', 'r') as f:
+        usersPath = os.path.join(self.outputDir, 'users.json')
+        if os.path.exists(usersPath):
+            with open(usersPath, 'r') as f:
                 return json.load(f)
         if not self.access_token:
             self._login()
@@ -92,6 +94,6 @@ class WireApi:
         except json.JSONDecodeError:
             raise ConnectionError("Invalid response from server: {}".format(resp.text))
 
-        with open('./users.json', 'w') as f:
+        with open(usersPath, 'w') as f:
             json.dump(respJson, f)
         return respJson
