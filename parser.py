@@ -57,15 +57,15 @@ if __name__ == '__main__':
     images = events.getAllAssetsInGroup(groups.getGroupByName("III MI"))
     print("Starting dump of {} images".format(len(images)))
     for event in tqdm(images):
-        fileName = './images/{}.img'.format(event.img_key.replace('/', ''))
+        fileName = './images/{}.img'.format(event.asset_key.replace('/', ''))
         if os.path.exists(fileName):
             continue
         
-        if not session.isOtrKeyValid(event.img_otr_key):
+        if not session.isOtrKeyValid(event.asset_otr_key):
             continue
 
-        key = session.convertOtrKey(event.img_otr_key)
-        asset = session.downloadAsset(event.img_key, key, event.img_token)
+        key = session.convertOtrKey(event.asset_otr_key)
+        asset = session.downloadAsset(event.asset_key, key, event.asset_token)
 
         with open(fileName, 'wb') as f:
             f.write(asset)

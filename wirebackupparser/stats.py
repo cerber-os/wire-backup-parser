@@ -124,7 +124,7 @@ class Stats:
             entry = [message.origin]
 
             if message.type == EVT_TYPE_ASSET_ADD:
-                entry += ["Asset {}".format(message.img_type)]
+                entry += ["Asset {}".format(message.asset_type)]
             else:
                 entry += ['\n'.join(wrap(message.message, 50))[:200]]
 

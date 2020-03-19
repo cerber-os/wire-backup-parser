@@ -76,11 +76,11 @@ class Event:
         if self.type == EVT_TYPE_MSG_ADD:
             self.message = event['data']['content']
         elif self.type == EVT_TYPE_ASSET_ADD:
-            self.img_type = event['data']['content_type']
-            self.img_sha256 = event['data'].get('sha256')
-            self.img_otr_key = event['data'].get('otr_key')
-            self.img_key = event['data'].get('key', '')
-            self.img_token = event['data'].get('token')
+            self.asset_type = event['data']['content_type']
+            self.asset_sha256 = event['data'].get('sha256')
+            self.asset_otr_key = event['data'].get('otr_key')
+            self.asset_key = event['data'].get('key', '')
+            self.asset_token = event['data'].get('token')
         else:
             pass
 
@@ -88,7 +88,7 @@ class Event:
         if self.type == EVT_TYPE_MSG_ADD:
             return "[{}] MSG <{}>: {}".format(self.time, self.origin, self.message)
         elif self.type == EVT_TYPE_ASSET_ADD:
-            return "[{}] IMAGE <{}> ID<{}>".format(self.time, self.origin, self.img_token)
+            return "[{}] IMAGE <{}> ID<{}>".format(self.time, self.origin, self.asset_token)
         elif self.type == EVT_TYPE_KNOCK:
             return "[{}] PING <{}>".format(self.time, self.origin)
         else:
@@ -124,4 +124,4 @@ class Events:
         return Users
 
     def getAllAssetsInGroup(self, group):
-        return [e for e in self.getEventsFromGroup(group) if e.type == EVT_TYPE_ASSET_ADD and e.img_key]
+        return [e for e in self.getEventsFromGroup(group) if e.type == EVT_TYPE_ASSET_ADD and e.asset_key]
