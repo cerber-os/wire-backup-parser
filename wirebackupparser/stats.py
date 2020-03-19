@@ -57,7 +57,7 @@ class Stats:
             if i not in distribution:
                 distribution[i] = 0
                 
-        return distribution
+        return Stats.countify(distribution, share=True, sortField=0, reverse=False)
 
     def calculate_usersShare(self):
         counts = {}
@@ -100,7 +100,7 @@ class Stats:
 
             distribution[hour] += 1
             
-        return distribution
+        return Stats.countify(distribution, histo=True, sortField=0, reverse=False)
 
     def calculate_monthDistribution(self):
         distribution = {}
@@ -112,10 +112,10 @@ class Stats:
 
             distribution[time] = distribution.get(time, 0) + 1
             
-        return distribution
+        return Stats.countify(distribution, stringSort=True, histo=True, sortField=0, reverse=False)
     
     @staticmethod
-    def countify(data, sortField=1, reverse=True, share=False, histo=False):
+    def countify(data, sortField=1, stringSort=False, reverse=True, share=False, histo=False):
         output = []
         total = 0
         maxValue = 0
@@ -132,10 +132,14 @@ class Stats:
             if histo:
                 percentage = data[key] / total
                 normalized = percentage / (maxValue / total)
-
-                entry[0] += [u"\u2588" * round(normalized * 25)]
+                entry[0] += [normalized * 100]
                 
             entry[0] += [total]
             output += entry
         
-        return sorted(output, key=lambda x: int(x[sortField]), reverse=reverse)
+        if not stringSort:
+            output = sorted(output, key=lambda x: int(x[sortField]), reverse=reverse)
+        else:
+            output = sorted(output, key=lambda x: str(x[sortField]), reverse=reverse)
+        
+        return output

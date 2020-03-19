@@ -128,56 +128,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>0</td>
-								<td>3438</td>
-								<td>82.92%</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>285</td>
-								<td>6.87%</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>201</td>
-								<td>4.85%</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>118</td>
-								<td>2.85%</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>65</td>
-								<td>1.57%</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>26</td>
-								<td>0.63%</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>9</td>
-								<td>0.22%</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>3</td>
-								<td>0.07%</td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>1</td>
-								<td>0.02%</td>
-							</tr>
+							{% for reacts, messages, share, total in stats.reactsDistribution %}
+								<tr>
+									<td>{{ reacts }}</td>
+									<td>{{ messages }}</td>
+									<td>{{ share }}</td>
+								</tr>
+							{% endfor %}
 						</tbody>
 						<tfoot>
 							<tr>
 								<th>Total</th>
-								<td>1514</td>
+								<td>{{ stats.reactsDistribution[0][-1] }}</td>
 								<td>100%</td>
 							</tr>
 						</tfoot>
@@ -244,131 +206,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>0</td>
-								<td>359</td>
-								<td><div class="histo"><div style="width: 92.05%"></div></div></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>63</td>
-								<td><div class="histo"><div style="width: 16.15%"></div></div></td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>17</td>
-								<td><div class="histo"><div style="width: 4.35%"></div></div></td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>5</td>
-								<td><div class="histo"><div style="width: 1.28%"></div></div></td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>4</td>
-								<td><div class="histo"><div style="width: 1.02%"></div></div></td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>1</td>
-								<td><div class="histo"><div style="width: 0.25%"></div></div></td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>9</td>
-								<td><div class="histo"><div style="width: 2.31%"></div></div></td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>15</td>
-								<td><div class="histo"><div style="width: 3.84%"></div></div></td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>25</td>
-								<td><div class="histo"><div style="width: 6.41%"></div></div></td>
-							</tr>
-							<tr>
-								<td>9</td>
-								<td>113</td>
-								<td><div class="histo"><div style="width: 28.97%"></div></div></td>
-							</tr>
-							<tr>
-								<td>10</td>
-								<td>178</td>
-								<td><div class="histo"><div style="width: 45.64%"></div></div></td>
-							</tr>
-							<tr>
-								<td>11</td>
-								<td>83</td>
-								<td><div class="histo"><div style="width: 21.28%"></div></div></td>
-							</tr>
-							<tr>
-								<td>12</td>
-								<td>166</td>
-								<td><div class="histo"><div style="width: 45.56%"></div></div></td>
-							</tr>
-							<tr>
-								<td>13</td>
-								<td>136</td>
-								<td><div class="histo"><div style="width: 34.87%"></div></div></td>
-							</tr>
-							<tr>
-								<td>14</td>
-								<td>182</td>
-								<td><div class="histo"><div style="width: 46.15%"></div></div></td>
-							</tr>
-							<tr>
-								<td>15</td>
-								<td>259</td>
-								<td><div class="histo"><div style="width: 66.41%"></div></div></td>
-							</tr>
-							<tr>
-								<td>16</td>
-								<td>390</td>
-								<td><div class="histo"><div style="width: 100%"></div></div></td>
-							</tr>
-							<tr>
-								<td>17</td>
-								<td>344</td>
-								<td><div class="histo"><div style="width: 88.21%"></div></div></td>
-							</tr>
-							<tr>
-								<td>18</td>
-								<td>254</td>
-								<td><div class="histo"><div style="width: 65.12%"></div></div></td>
-							</tr>
-							<tr>
-								<td>19</td>
-								<td>302</td>
-								<td><div class="histo"><div style="width: 77.46%"></div></div></td>
-							</tr>
-							<tr>
-								<td>20</td>
-								<td>334</td>
-								<td><div class="histo"><div style="width: 85.64%"></div></div></td>
-							</tr>
-							<tr>
-								<td>21</td>
-								<td>358</td>
-								<td><div class="histo"><div style="width: 91.79%"></div></div></td>
-							</tr>
-							<tr>
-								<td>22</td>
-								<td>238</td>
-								<td><div class="histo"><div style="width: 61.02%"></div></div></td>
-							</tr>
-							<tr>
-								<td>23</td>
-								<td>275</td>
-								<td><div class="histo"><div style="width: 70.51%"></div></div></td>
-							</tr>
+							{% for hour, messages, histo, total in stats.hourDistribution %}
+								<tr>
+									<td>{{ hour }}</td>
+									<td>{{ messages }}</td>
+									<td><div class="histo"><div style="width: {{ histo }}%"></div></div></td>
+								</tr>
+							{% endfor %}
 						</tbody>
 						<tfoot>
 							<tr>
 								<th>Total</th>
-								<td>4146</td>
+								<td>{{ stats.hourDistribution[0][-1] }}</td>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -383,16 +232,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>2020</td>
-								<td>4146</td>
-								<td><div class="histo"><div style="width: 100%"></div></div></td>
-							</tr>
+							{% for period, messages, histo, total in stats.monthDistribution %}
+								<tr>
+									<td>{{ period }}</td>
+									<td>{{ messages }}</td>
+									<td><div class="histo"><div style="width: {{ histo }}%"></div></div></td>
+								</tr>
+							{% endfor %}
 						</tbody>
 						<tfoot>
 							<tr>
 								<th>Total</th>
-								<td>4146</td>
+								<td>{{ stats.monthDistribution[0][-1] }}</td>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -457,7 +308,6 @@
 								</a>
 							{% endif %}
 						{% endfor %}
-						 
 					</div>
 				</section>
 			</main>
