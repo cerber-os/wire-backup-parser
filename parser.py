@@ -1,60 +1,35 @@
 #!/usr/bin/env python3
+import argparse
 import os
-import json
 from jinja2 import Environment, FileSystemLoader
-from terminaltables import SingleTable
 from tqdm import tqdm
 from time import sleep
 from wirebackupparser.wireAPI import WireApi
-from wirebackupparser.groups import Groups, BackupOwner
+from wirebackupparser.groups import Groups
 from wirebackupparser.events import Events
 from wirebackupparser.stats import Stats
-
-
-def printExportInfo(exportInfo):
-    pkg_info = (
-        ("Created on", exportInfo.get('creation_time', '[None]')),
-        ("Username", exportInfo.get('user_name', '[None]')),
-        ("Version", str(exportInfo.get('version', '[None]'))),
-    )
-    
-    table_instance = SingleTable(pkg_info, "Export Info")
-    table_instance.justify_columns[1] = 'right'
-    table_instance.inner_heading_row_border = False
-    
-    print(table_instance.table)
+from wirebackupparser.backupFile import WireBackup
 
 
 if __name__ == '__main__':
-    with open('./export.json', 'r', encoding='utf-8') as f:
-        exportInfo = json.load(f)
-        
-    with open('./events.json', 'r', encoding='utf-8') as f:
-        events = json.load(f)
-    
-    with open('./conversations.json', 'r', encoding='utf-8') as f:
-        convs = json.load(f)
-    
-    # export info
-    printExportInfo(exportInfo)
-    import wirebackupparser.groups
-    wirebackupparser.groups.BackupOwner = exportInfo['user_id']
-    
-    # conversation info
-    groups = Groups(convs)
-    groups.dumpGroups()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--file',  help='backup file downloaded from Wire client', required=True)
+    parser.add_argument('-g', '--group', help='TODO: some nice help here', required=True)
+    parser.add_argument('-o', '--output', help='directory in which output files should be saved', default=os.curdir)
+    args = parser.parse_args()
 
-    # login via WireApi
+    backup = WireBackup(args.file)
     session = WireApi()
-
-    # collect and filter events
-    events = Events(events, session)
+    
+    # parse backup file
+    groups = Groups(backup)
+    events = Events(backup, session)
 
     # generate statistics
-    stats = Stats(events, groups.getGroupByName("III MI"))
-    stats.dumpVariousStats()
+    stats = Stats(events, groups.getGroupByName(args.group))
+    # stats.dumpVariousStats()
 
-    assets = events.getAllAssetsInGroup(groups.getGroupByName("III MI"))
+    assets = events.getAllAssetsInGroup(groups.getGroupByName(args.group))
     print("Dumping {} assets".format(len(assets)))
     for event in tqdm(assets):
         fileName = './assets/{}'.format(event.asset_key.replace('/', ''))
@@ -65,6 +40,7 @@ if __name__ == '__main__':
             continue
 
         key = session.convertOtrKey(event.asset_otr_key)
+        print(fileName)
         asset = session.downloadAsset(event.asset_key, key, event.asset_token)
 
         with open(fileName, 'wb') as f:

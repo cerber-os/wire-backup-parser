@@ -2,18 +2,17 @@ from terminaltables import SingleTable
 from wirebackupparser.events import ProxyUser
 
 ENT_TYPE_GROUP = 0
-BackupOwner = None
 
 
 class Group:
-    def __init__(self, uid, name, creator, others):
+    def __init__(self, uid, name, creator, others, backupOwner):
         self.id = uid
         self.name = name
         self.creator = ProxyUser(creator) if creator else None
         self.members = [ProxyUser(o) for o in others] if others else []
         if self.creator and self.creator not in self.members:
             self.members.append(self.creator)
-        self.members.append(ProxyUser(BackupOwner))
+        self.members.append(ProxyUser(backupOwner))
 
     def __str__(self):
         return self.name
@@ -28,8 +27,8 @@ class Group:
 class Groups:
     groups = []
 
-    def __init__(self, convs):
-        for conv in convs:
+    def __init__(self, backup):
+        for conv in backup.convs:
             # Only parse groups
             if conv.get('type') != ENT_TYPE_GROUP:
                 continue
@@ -37,7 +36,8 @@ class Groups:
             self.groups.append(Group(conv.get('id'),
                                      conv.get('name'),
                                      conv.get('creator'),
-                                     conv.get('others')))
+                                     conv.get('others'),
+                                     backupOwner=backup.backupOwner))
 
     def dumpGroups(self):
         data = [["ID[:6]", "Name", "Member count"]]

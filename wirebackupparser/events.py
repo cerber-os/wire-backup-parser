@@ -107,8 +107,9 @@ class Event:
 class Events:
     events = []
 
-    def __init__(self, events, session=None):
+    def __init__(self, backup, session=None):
         global Users
+        events = backup.events
         for event in events:
             e = Event(event)
             self.events.append(e)
