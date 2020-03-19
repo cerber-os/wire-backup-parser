@@ -82,7 +82,7 @@
 				margin-bottom: 0;
 			}
 			
-			div.overviewcontrols {
+			form.overviewcontrols {
 				margin-bottom: 1em;
 			}
 			div.message {
@@ -90,6 +90,12 @@
 				padding: 1em;
 				
 				font-size: 10pt;
+			}
+			#overview div.message {
+				display: none;
+			}
+			#overview div.message[data-shown] {
+				display: block;
 			}
 			div.message:nth-child(even) {
 				background-color: #F2F2F2;
@@ -117,7 +123,7 @@
 				font-style: italic;
 				margin-top: 0.5em;
 			}
-			div.pagecontrols {
+			form.pagecontrols {
 				margin-top: 1em;
 				text-align: center;
 			}
@@ -240,6 +246,45 @@
 				var screen = form.elements.screen.value;
 				document.getElementById(screen).className = "enabled";
 			}
+			function paginate() {
+				var sort = document.getElementById("sort").value;
+				var perPage = Number(document.getElementById("perpage").value);
+				var messages = document.getElementById("messages");
+				
+				var pageCount = Math.ceil(messages.children.length / perPage);
+				document.getElementById("page").max = pageCount;
+				document.getElementById("pagecount").innerText = pageCount;
+				
+				var page = Number(document.getElementById("page").value);
+				if (page > pageCount) {
+					page = pageCount;
+					document.getElementById("page").value = pageCount;
+				}
+				window.scroll(0, 0);
+				
+				for (var i = 0; i < messages.children.length; i++)
+					messages.children[i].removeAttribute("data-shown");
+				
+				if (perPage == 0) {
+					for (var i = 0; i < messages.children.length; i++)
+						messages.children[i].setAttribute("data-shown", "data-shown");
+					
+					document.getElementById("page").value = "1";
+					document.getElementById("page").max = "1";
+					document.getElementById("pagecount").innerText = "1";
+					return;
+				}
+				
+				var skippedElements = (page - 1) * perPage;
+				if (sort == "desc")
+					for (var i = 0; i < perPage; i++)
+						messages.children[messages.children.length - skippedElements - 1 - i].setAttribute("data-shown", "data-shown");
+				else 
+					for (var i = 0; i < perPage; i++)
+						messages.children[skippedElements + i].setAttribute("data-shown", "data-shown");
+			}
+			
+			window.onload = paginate;
 		</script>
 	</head>
 	<body>
@@ -257,28 +302,28 @@
 			</nav>
 			<main>
 				<section id="overview" class="enabled">
-					<div class="overviewcontrols">
-						<select>
-							<option>Newest first</option>
-							<option>Oldest first</option>
+					<form class="overviewcontrols" onchange="paginate()">
+						<select id="sort">
+							<option value="desc">Newest first</option>
+							<option value="asc">Oldest first</option>
 						</select>
-						<select>
-							<option>50 per page</option>
-							<option>100 per page</option>
-							<option>200 per page</option>
-							<option>Show everything</option>
+						<select id="perpage">
+							<option value="50">50 per page</option>
+							<option value="100">100 per page</option>
+							<option value="200">200 per page</option>
+							<option value="0">Show everything</option>
 						</select>
-					</div>
+					</form>
 					<div id="messages">
 						{% for event in events %}
 							{% include "message.html" %}
 						{% endfor %}
 					</div>
-					<div class="pagecontrols">
+					<form class="pagecontrols" onchange="paginate()" onsubmit="return false">
 						Page
-						<input type="number" class="page" value="1" min="1" max="2137">
-						of 2137
-					</div>
+						<input type="number" id="page" class="page" value="1" min="1" max="1" autocomplete="off">
+						of <span id="pagecount">1</span>
+					</form>
 				</section>
 				<section id="statistics">
 					<h2>Export info</h2>
