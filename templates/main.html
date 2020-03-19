@@ -23,8 +23,13 @@
 			footer {
 				font-size: 10pt;
 				margin: 0.5em 0;
-				text-align: right;
 				color: #AAAAAA;
+			}
+			footer > a {
+				color: inherit;
+			}
+			footer > a.credits {
+				float: right;
 			}
 			a {
 				text-decoration: none;
@@ -757,7 +762,10 @@
 				</section>
 			</main>
 			<footer>
-				Wire Backup Parser by Armia Prezesa
+				<a href="#" onclick="window.print(); return false">Print</a>
+				<a class="credits" href="https://github.com/cerber-os/wire-backup-parser" target="_blank">
+					Wire Backup Parser by Armia Prezesa
+				</a>
 			</footer>
 		</div>
 	</body>
