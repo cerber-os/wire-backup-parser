@@ -40,7 +40,7 @@ if __name__ == '__main__':
     import wirebackupparser.groups
     wirebackupparser.groups.BackupOwner = exportInfo['user_id']
     
-    # converastion info
+    # conversation info
     groups = Groups(convs)
     groups.dumpGroups()
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # collect and filter events
     events = Events(events, session)
 
-    # generate some fancy statistics
+    # generate statistics
     stats = Stats(events, groups.getGroupByName("III MI"))
     stats.dumpVariousStats()
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
         sleep(0.50)
 
     # render html version of backup
-    with open('./summarytemplate.html', 'r') as f:
+    with open('./templates/main.html', 'r') as f:
         tm = Template(f.read())
     out = tm.render(events=events, stats=stats, groups=groups)
-    with open('./output.html', 'w') as f:
+    with open('./report.html', 'w') as f:
         f.write(out)
