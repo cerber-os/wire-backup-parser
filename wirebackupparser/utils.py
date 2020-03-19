@@ -12,7 +12,7 @@ def generateThumbnail(inputFile, outputFile):
         return
     elif 'image data' in fileType:
         im = Image.open(inputFile)
-        im.thumbnail((200, 200))
+        im.thumbnail((100, 100))
         im.save(outputFile + '.png')
     else:
         # TODO: Add additional file formats
