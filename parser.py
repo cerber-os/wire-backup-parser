@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import json
+from jinja2 import Template
 from terminaltables import SingleTable
 from tqdm import tqdm
 from time import sleep
@@ -8,6 +9,7 @@ from wireAPI import WireApi
 from groups import Groups
 from events import Events
 from stats import Stats
+
 
 
 def printExportInfo(exportInfo):
@@ -67,3 +69,10 @@ if __name__ == '__main__':
         with open(fileName, 'wb') as f:
             f.write(asset)
         sleep(0.50)
+
+    # render html version of backup
+    with open('./summarytemplate.html', 'r') as f:
+        tm = Template(f.read())
+    out = tm.render(events=events, stats=stats, groups=groups)
+    with open('./output.html', 'w') as f:
+        f.write(out)
