@@ -197,6 +197,39 @@
 					margin: 0 auto;
 				}
 			}
+			
+			div.mediacontainer {
+				display: flex;
+				flex-wrap: wrap;
+				align-content: flex-start;
+				font-size: 0;
+				
+				min-height: 500px;
+				height: 500px;
+				overflow-y: scroll;
+				resize: vertical;
+				
+				background-color: #F2F2F2;
+				padding: 2.5pt;
+			}
+			a.mediaitem {
+				display: inline-block;
+				margin: 2.5pt;
+				padding: 5pt;
+				
+				background-color: #FAFAFA;
+			}
+			div.mediacontainer.textthumb a.mediaitem {
+				width: 100px;
+				height: 100px;
+				
+				font-size: 10pt;
+				word-break: break-all;
+				
+				display: flex;
+				align-items: center;
+				text-align: center;
+			}
 		</style>
 		
 		<script type="text/javascript">
@@ -670,7 +703,44 @@
 				</section>
 				
 				<section id="media">
-					media
+					<h2>Images</h2>
+					<div class="mediacontainer">
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+						<a class="mediaitem" href="what.jpg"><img src="thumb.png"></a>
+					</div>
+					<h2>Remaining assets</h2>
+					<div class="mediacontainer textthumb">
+						 <a class="mediaitem" href="what.jpg">d41d8cd98f00b204e9800998ecf8427e</a>
+					</div>
 				</section>
 			</main>
 			<footer>
