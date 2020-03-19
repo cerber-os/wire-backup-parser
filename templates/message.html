@@ -5,10 +5,14 @@
 		{% if event.type == "conversation.message-add" %}
 			{{ event.message|e }}
 		{% elif event.type == "conversation.asset-add" %}
-			{% if event.is_image %}
+			{% if event.asset_kind == "image" %}
 				<a href="assets/{{ event.asset_key }}" target="_blank">
 					<img src="assets/{{ event.asset_key }}">
 				</a>
+			{% elif event.asset_kind == "audio" %}
+				<audio src="assets/{{ event.asset_key }}"></audio>
+			{% elif event.asset_kind == "video" %}
+				<video src="assets/{{ event.asset_key }}" controls></video>
 			{% else %}
 				<span class="eventdescription">
 					Asset <a href="assets/{{ event.asset_key }}">{{ event.asset_key }}</a>
