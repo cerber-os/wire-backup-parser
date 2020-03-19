@@ -191,19 +191,17 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>CYCUEL</td>
-								<td>426</td>
-							</tr>
-							<tr>
-								<td>Dominik Bartkowski</td>
-								<td>357</td>
-							</tr>
+							{% for user, count, total in stats.selfAdoration %}
+								<tr>
+									<td>{{ user }}</td>
+									<td>{{ count }}</td>
+								</tr>
+							{% endfor %}
 						</tbody>
 						<tfoot>
 							<tr>
 								<th>Total</th>
-								<td>1514</td>
+								<td>{{ stats.selfAdoration[0][-1] }}</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -219,21 +217,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>CYCUEL</td>
-								<td>426</td>
-								<td>28.14%</td>
-							</tr>
-							<tr>
-								<td>Dominik Bartkowski</td>
-								<td>357</td>
-								<td>23.58%</td>
-							</tr>
+							{% for user, count, share, total in stats.usersShare %}
+								<tr>
+									<td>{{ user }}</td>
+									<td>{{ count }}</td>
+									<td>{{ share }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
 						</tbody>
 						<tfoot>
 							<tr>
 								<th>Total</th>
-								<td>1514</td>
+								<td>{{ stats.usersShare[0][-1] }}</td>
 								<td>100%</td>
 							</tr>
 						</tfoot>

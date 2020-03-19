@@ -68,7 +68,7 @@ class Stats:
         for event in self.events:
             counts[str(event.origin)] += 1
             
-        return counts
+        return Stats.countify(counts, share=True)
 
     def calculate_bestMessages(self, period):
         top = filter(lambda x: x.time.startswith(period), self.events)
@@ -86,7 +86,7 @@ class Stats:
             if event.origin in event.reactions:
                 counts[str(event.origin)] += 1
                 
-        return counts
+        return Stats.countify(counts)
 
     def calculate_hourDistribution(self):
         distribution = {}
