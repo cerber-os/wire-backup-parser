@@ -7,16 +7,18 @@ from events import EVT_TYPE_ASSET_ADD, getUserByID
 
 class Stats:
     def __init__(self, events, group):
-        self.events = events
+        self.events = events.getEventsFromGroup(group)
         self.group = group
+        self.users = group.getMembers()
+        print([str(u) for u in self.users])
 
     def printStat_reactsGiven(self):
         counts = {}
 
-        for user in self.events.getUsers():
+        for user in self.users:
             counts[str(user)] = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             for user in event.reactions:
                 counts[str(user)] += 1
 
@@ -25,10 +27,10 @@ class Stats:
     def printStat_reactsReceived(self):
         counts = {}
 
-        for user in self.events.getUsers():
+        for user in self.users:
             counts[str(user)] = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             counts[str(event.origin)] += len(event.reactions)
 
         self.printCounts("Reacts received", counts, showShare=True)
@@ -37,7 +39,7 @@ class Stats:
         distribution = {}
         maxLikes = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             likes = len(event.reactions)
             distribution[likes] = distribution.get(likes, 0) + 1
             maxLikes = max(maxLikes, likes)
@@ -50,32 +52,32 @@ class Stats:
                          dataValue="Messages")
 
     def printStat_messagesLikedBy(self, user):
-        msgs = filter(lambda x: user in x.reactions, self.events.getEventsFromGroup(self.group))
+        msgs = filter(lambda x: user in x.reactions, self.events)
         self.printMessages("Messages liked by {}".format(str(user)), msgs)
 
     def printStat_usersShare(self):
         counts = {}
 
-        for user in self.events.getUsers():
+        for user in self.users:
             counts[str(user)] = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             counts[str(event.origin)] += 1
 
         self.printCounts("Users share in messages", counts, showShare=True)
 
     def printStat_bestMessages(self, year):
-        top = filter(lambda x: x.time.startswith(str(year)), self.events.getEventsFromGroup(self.group))
+        top = filter(lambda x: x.time.startswith(str(year)), self.events)
         top = sorted(top, key=lambda x: len(x.reactions), reverse=True)
         self.printMessages("Best messages of {}".format(year), top, includeLikes=True)
 
     def printStat_selfAdoration(self):
         counts = {}
 
-        for user in self.events.getUsers():
+        for user in self.users:
             counts[str(user)] = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             if event.origin in event.reactions:
                 counts[str(event.origin)] += 1
         self.printCounts("Self-awarded likes", counts)
@@ -85,7 +87,7 @@ class Stats:
         for i in range(0, 24):
             distribution[i] = 0
 
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             hour = dateutil.parser.isoparse(event.time)
             hour = hour.replace(tzinfo=timezone.utc).astimezone(tz=None)
             hour = hour.hour
@@ -98,7 +100,7 @@ class Stats:
 
     def printStat_monthDistribution(self):
         distribution = {}
-        for event in self.events.getEventsFromGroup(self.group):
+        for event in self.events:
             time = dateutil.parser.isoparse(event.time)
             if time.year == 1970:
                 continue
