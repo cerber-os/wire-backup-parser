@@ -1,5 +1,5 @@
 *.json
-images/
+assets/
 report.html
 
 # Byte-compiled / optimized / DLL files

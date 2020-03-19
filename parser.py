@@ -54,10 +54,10 @@ if __name__ == '__main__':
     stats = Stats(events, groups.getGroupByName("III MI"))
     stats.dumpVariousStats()
 
-    images = events.getAllAssetsInGroup(groups.getGroupByName("III MI"))
-    print("Starting dump of {} images".format(len(images)))
-    for event in tqdm(images):
-        fileName = './images/{}.img'.format(event.asset_key.replace('/', ''))
+    assets = events.getAllAssetsInGroup(groups.getGroupByName("III MI"))
+    print("Dumping {} assets".format(len(assets)))
+    for event in tqdm(assets):
+        fileName = './assets/{}'.format(event.asset_key.replace('/', ''))
         if os.path.exists(fileName):
             continue
         
