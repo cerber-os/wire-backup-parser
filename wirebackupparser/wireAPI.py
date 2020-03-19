@@ -73,7 +73,7 @@ class WireApi:
 
     def getUsersList(self, usersIDs, retryOn403=True):
         if os.path.exists('./users.json'):
-            with open('./users.json', 'r') as f:
+            with open('./users.json', 'r', encoding='utf-8') as f:
                 return json.load(f)
         if not self.access_token:
             self._login()
@@ -89,10 +89,10 @@ class WireApi:
         elif resp.status_code != 200:
             raise ConnectionError("Request failed with status {} - {}".format(resp.status_code, resp.text))
         try:
-            respJson = json.loads(resp.text)
+            respJson = json.loads(resp.content.decode('utf-8'))
         except json.JSONDecodeError:
             raise ConnectionError("Invalid response from server: {}".format(resp.text))
 
-        with open('./users.json', 'w') as f:
+        with open('./users.json', 'w', encoding='utf-8') as f:
             json.dump(respJson, f)
         return respJson
