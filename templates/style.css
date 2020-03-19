@@ -1,0 +1,262 @@
+body {
+	font-family: Roboto, sans-serif;
+	font-weight: 300;
+	
+	background-color: #FAFAFA;
+}
+main {
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DA;
+	
+	padding: 1em;
+}
+footer {
+	font-size: 10pt;
+	margin: 0.5em 0;
+	color: #AAAAAA;
+}
+footer > a {
+	color: inherit;
+}
+footer > a.credits {
+	float: right;
+}
+a {
+	text-decoration: none;
+	color: #0366D6;
+}
+select, option, input {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	padding: 0.5em;
+}
+
+div.main {
+	width: 100%;
+	max-width: 1000px;
+	
+	margin: 100px auto;
+}
+
+nav form {
+	display: flex;
+}
+nav label {
+	display: flex;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 1em 0;
+	
+	justify-content: center;
+	align-items: center;
+	
+	cursor: pointer;
+}
+nav input:checked + label {
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DA;
+	border-bottom: none;
+	
+	font-weight: 500;
+}
+nav input {
+	display: none;
+}
+
+section {
+	display: none;
+	page-break-after: always;
+}
+section.enabled {
+	display: block;
+}
+section > *:first-child {
+	margin-top: 0;
+}
+section > *:last-child {
+	margin-bottom: 0;
+}
+
+form.overviewcontrols {
+	margin-bottom: 1em;
+}
+div.message {
+	background-color: #FAFAFA;
+	padding: 1em;
+	
+	font-size: 10pt;
+}
+#overview div.message {
+	display: none;
+}
+#overview div.message[data-shown] {
+	display: block;
+}
+div.message:nth-child(even) {
+	background-color: #F2F2F2;
+}
+div.message p {
+	margin: 0;
+}
+div.message p.date {
+	float: right;
+	color: #AAAAAA;
+}
+div.message p.author {
+	font-weight: 500;
+}
+div.message p.content {
+	margin-top: 0.5em;
+}
+div.message p.content img,
+div.message p.content video {
+	max-width: 100%;
+	max-height: 500px;
+}
+div.message p.likes {
+	color: #AAAAAA;
+	font-style: italic;
+	margin-top: 0.5em;
+}
+form.pagecontrols {
+	margin-top: 1em;
+	text-align: center;
+}
+input.page {
+	width: 3em;
+}
+span.eventdescription {
+	font-style: italic;
+}
+
+table {
+	max-width: 100%;
+	box-sizing: border-box;
+	
+	border-collapse: collapse;
+	border: 1px solid #D1D5DA;
+}
+td, th {
+	border: 1px solid #D1D5DA;
+	padding: 0.5em;
+}
+table th:only-of-type {
+	text-align: left;
+}
+table th:only-child {
+	text-align: center;
+}
+
+table.count td:nth-child(2) {
+	text-align: right;
+}
+table.count.share td:nth-child(3) {
+	text-align: right;
+}
+
+table.histo {
+	max-width: 500px;
+}
+table.histo tbody td:last-child {
+	border-top: none;
+	border-bottom: none;
+	
+	width: 100%;
+	max-width: 250px;
+}
+div.histo {
+	width: 100%;
+}
+div.histo > div {
+	height: 10pt;
+	background-color: #3572A5;
+}
+table.smalldist tbody {
+	font-size: 10pt;
+}
+
+table.messages {
+	width: 100%;
+}
+table.messages th {
+	font-size: 20pt;
+	text-align: center;
+	
+	width: 1px;
+}
+table.messages td {
+	padding: 0;
+}
+table.messages tr {
+	cursor: pointer;
+}
+table.messages tr:nth-child(even) div.message {
+	background-color: #F2F2F2;
+}
+
+div.mediacontainer {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	font-size: 0;
+	
+	min-height: 350px;
+	height: 350px;
+	overflow-y: auto;
+	resize: vertical;
+	
+	background-color: #F2F2F2;
+	padding: 2.5pt;
+}
+a.mediaitem {
+	display: inline-block;
+	margin: 2.5pt;
+	padding: 5pt;
+	
+	background-color: #FAFAFA;
+}
+a.mediaitem > img {
+	width: 100px;
+	height: 100px;
+}
+div.mediacontainer.textthumb a.mediaitem {
+	width: 100px;
+	height: 100px;
+	
+	font-size: 10pt;
+	word-break: break-all;
+	color: inherit;
+	
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+@media screen and ( max-width: 1100px ) {
+	div.main {
+		margin: 0 auto;
+	}
+}
+
+@media print {
+	div.main {
+		margin: 0 auto;
+	}
+	nav {
+		display: none;
+	}
+	section {
+		display: block;
+	}
+	section:not(:first-child) {
+		margin-top: 1em;
+	}
+	a.print {
+		display: none;
+	}
+	div.mediacontainer {
+		height: auto;
+		min-height: auto;
+	}
+}
