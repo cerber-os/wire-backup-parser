@@ -32,14 +32,17 @@ if __name__ == '__main__':
 
     outputDir, assetsDir, thumbsDir = createWorkingDir(args.output)
 
+    print("Loading backup...")
     backup = WireBackup(args.file)
     session = WireApi(outputDir=outputDir)
 
     # parse backup file
+    print("Parsing backup...")
     groups = Groups(backup)
     events = Events(backup, session)
 
     # generate statistics
+    print("Generating stats...")
     stats = Stats(events, groups.getGroupByName(args.group))
     stats.calculateStats()
 
