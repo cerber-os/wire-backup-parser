@@ -60,9 +60,9 @@ if __name__ == '__main__':
         env = Environment(trim_blocks=True, lstrip_blocks=True, loader=FileSystemLoader("templates")).from_string(
             f.read())
 
-    out = env.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")),
+    out = env.render(events=events.getEventsFromGroup(groups.getGroupByName(args.group)),
                      stats=stats,
-                     group=groups.getGroupByName("III MI"),
+                     group=groups.getGroupByName(args.group),
                      export=backup.getBackupInfo())
 
     with open(os.path.join(outputDir, 'report.html'), 'w', encoding='utf-8') as f:

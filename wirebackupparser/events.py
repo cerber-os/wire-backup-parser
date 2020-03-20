@@ -86,6 +86,11 @@ class Event:
 
         if self.type == EVT_TYPE_MSG_ADD:
             self.message = event['data']['content']
+            if type(event['data'].get('quote')) is dict:
+                self.quote_from = ProxyUser(event['data']['quote'].get('user_id'))
+                self.quote_msg_id = event['data']['quote'].get('message_id')
+            else:
+                self.quote_msg = self.quote_msg = None
         elif self.type == EVT_TYPE_ASSET_ADD:
             self.asset_name = event['data'].get('info', {}).get('name')
             self.asset_type = event['data']['content_type']

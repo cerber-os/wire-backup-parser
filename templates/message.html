@@ -3,6 +3,7 @@
 	<p class="author">{{ event.origin }}</p>
 	<p class="content">
 		{% if event.type == "conversation.message-add" %}
+			{% if event.quote_msg_id %}<span class="cite">&nbsp;</span><span class="eventdescription" style="padding-left: 6px;">In response to <a onclick="showMessage('{{ event.quote_msg_id }}')">this message</a> from {{ event.quote_from|e }}</span><br />{% endif %}
 			{{ event.message|e }}
 		{% elif event.type == "conversation.asset-add" %}
 			{% if event.asset_kind == "image" %}

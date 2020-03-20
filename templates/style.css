@@ -133,6 +133,12 @@ input.page {
 span.eventdescription {
 	font-style: italic;
 }
+span.cite {
+	display: inline-block;
+	background-color: gray;
+	max-width: 2px;
+	margin-left: 4px;
+}
 
 table {
 	max-width: 100%;
