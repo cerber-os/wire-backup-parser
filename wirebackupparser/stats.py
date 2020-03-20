@@ -1,8 +1,5 @@
 import dateutil.parser
 from datetime import timezone
-from textwrap import wrap
-from terminaltables import SingleTable
-from wirebackupparser.events import EVT_TYPE_ASSET_ADD, getUserByID
 
 
 class Stats:

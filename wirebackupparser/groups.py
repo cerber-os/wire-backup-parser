@@ -1,4 +1,3 @@
-from terminaltables import SingleTable
 from wirebackupparser.events import ProxyUser
 
 ENT_TYPE_GROUP = 0
@@ -45,15 +44,6 @@ class Groups:
                                      conv.get('creator'),
                                      conv.get('others'),
                                      backupOwner=backup.backupOwner))
-
-    def dumpGroups(self):
-        data = [["ID[:6]", "Name", "Member count"]]
-
-        for group in self.groups:
-            data.append([group.id[:6], group.name, len(group.members)])
-
-        table_instance = SingleTable(data, "Group conversations")
-        print(table_instance.table)
 
     def getGroupByName(self, name):
         for group in self.groups:
