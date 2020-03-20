@@ -1,7 +1,7 @@
+*.backup
 *.json
 *.desktop_wbu
-assets/
-report.html
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
