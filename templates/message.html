@@ -13,12 +13,13 @@
 				<audio src="assets/{{ event.asset_key }}"></audio>
 			{% elif event.asset_kind == "video" %}
 				<video src="assets/{{ event.asset_key }}" controls></video>
-			{% else %}
+			{% elif event.asset_key %}
 				<span class="eventdescription">
 					Asset <a href="assets/{{ event.asset_key }}">{{ event.asset_key }}</a>
 				</span>
+			{% else %}
+				<span class="eventdescription" style="color: red">Asset unavailable</span>
 			{% endif %}
-		</span>
 		{% elif event.type == "conversation.delete-everywhere" %}
 			<span class="eventdescription">Deleted message</span>
 		{% elif event.type == "conversation.knock" %}
@@ -32,13 +33,8 @@
 		{% elif event.type == "conversation.member-leave" %}
 			<span class="eventdescription">Removed user(s): {% for user in event.target_users %}{{ user|e }} {% endfor %}</span>
 		{% elif event.type == "conversation.location" %}
-			<span class="eventdescription">Shared location {% if event.location_name %}of "{{ event.location_name|e }}" {% endif %}:
-				<ul>
-					<li>Longitude: {{ event.longitude }}</li>
-					<li>Latitude: {{ event.latitude }}</li>
-					<li>Zoom level: {{ event.location_zoom }}</li>
-				</ul>
-			</span>
+			<span class="eventdescription">Shared location {% if event.location_name %}of "{{ event.location_name|e }}" {% endif %}:</span>
+			<span class="eventdescription">Longitude: {{ event.longitude }}, Latitude: {{ event.latitude }}, Zoom level: {{ event.location_zoom }}</span>
 		{% elif event.type == "conversation.unable-to-decrypt" %}
 			<span class="eventdescription" style="color: red">Unable to decrypt message: {{ event.reason|e }} </span>
 		{% else %}
