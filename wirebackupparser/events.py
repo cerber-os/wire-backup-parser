@@ -5,6 +5,12 @@ from time import sleep
 EVT_TYPE_MSG_ADD = 'conversation.message-add'
 EVT_TYPE_ASSET_ADD = 'conversation.asset-add'
 EVT_TYPE_KNOCK = 'conversation.knock'
+EVT_TYPE_CONV_RENAME = 'conversation.rename'
+EVT_TYPE_CONV_JOIN = 'conversation.member-join'
+EVT_TYPE_CONV_LEAVE = 'conversation.member-leave'
+EVT_TYPE_CONV_LOCATION = 'conversation.location'
+EVT_TYPE_UNABLE_TO_DECRYPT = 'conversation.unable-to-decrypt'
+EVT_TYPE_DELETE_MSG = 'conversation.delete-everywhere'
 
 Users = []
 
@@ -96,6 +102,19 @@ class Event:
                 self.asset_kind = "video"
             else:
                 self.asset_kind = "other"
+        elif self.type == EVT_TYPE_CONV_RENAME:
+            self.new_name = event['data']['name']
+        elif self.type in [EVT_TYPE_CONV_JOIN, EVT_TYPE_CONV_LEAVE]:
+            self.target_users = [ProxyUser(u) for u in event['data']['user_ids']]
+        elif self.type == EVT_TYPE_CONV_LOCATION:
+            self.longitude = event['data']['location']['longitude']
+            self.latitude = event['data']['location']['latitude']
+            self.location_name = event['data']['location']['name']
+            self.location_zoom = event['data']['location']['zoom']
+        elif self.type == EVT_TYPE_UNABLE_TO_DECRYPT:
+            self.reason = event['error']
+        elif self.type == EVT_TYPE_DELETE_MSG:
+            self.when = event['data']['deleted_time']
         else:
             pass
 

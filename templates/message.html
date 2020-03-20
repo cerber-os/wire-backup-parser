@@ -25,6 +25,22 @@
 			<span class="eventdescription">Pinged</span>
 		{% elif event.type == "conversation.group-creation" %}
 			<span class="eventdescription">Created group</span>
+		{% elif event.type == "conversation.rename" %}
+			<span class="eventdescription">Renamed group to "{{ event.new_name|e }}"</span>
+		{% elif event.type == "conversation.member-join" %}
+			<span class="eventdescription">Added user(s): {% for user in event.target_users %}{{ user|e }} {% endfor %}</span>
+		{% elif event.type == "conversation.member-leave" %}
+			<span class="eventdescription">Removed user(s): {% for user in event.target_users %}{{ user|e }} {% endfor %}</span>
+		{% elif event.type == "conversation.location" %}
+			<span class="eventdescription">Shared location {% if event.location_name %}of "{{ event.location_name|e }}" {% endif %}:
+				<ul>
+					<li>Longitude: {{ event.longitude }}</li>
+					<li>Latitude: {{ event.latitude }}</li>
+					<li>Zoom level: {{ event.location_zoom }}</li>
+				</ul>
+			</span>
+		{% elif event.type == "conversation.unable-to-decrypt" %}
+			<span class="eventdescription" style="color: red">Unable to decrypt message: {{ event.reason|e }} </span>
 		{% else %}
 			<span style="color: red">{{ event.type }}</span>
 		{% endif %}
