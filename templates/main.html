@@ -268,7 +268,7 @@
 					<h2>Images</h2>
 					<div class="mediacontainer">
 						{% for event in events|reverse %}
-							{% if event.asset_kind == "image" %}
+							{% if event.asset_kind == "image" and event.asset_key %}
 								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
 									<img src="assets/thumbnails/{{ event.asset_key }}.png">
 								</a>
@@ -279,6 +279,11 @@
 					<div class="mediacontainer textthumb">
 						{% for event in events|reverse %}
 							{% if event.asset_kind and event.asset_kind != "image" %}
+								{% if not event.asset_key %}
+								<a class="mediaitem" target="_blank" style="color: red">
+									Asset <br>unavailable
+								</a>
+								{% else %}
 								<a class="mediaitem" href="assets/{{ event.asset_key }}" target="_blank">
 									{% if event.asset_kind == "audio" %}
 										Audio
@@ -289,6 +294,7 @@
 									{% endif %}
 									<br>{% if event.asset_name %} {{ event.asset_name }} {% else %} {{ event.asset_key }} {% endif %}
 								</a>
+								{% endif %}
 							{% endif %}
 						{% endfor %}
 					</div>
