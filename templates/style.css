@@ -141,6 +141,9 @@ table {
 	border-collapse: collapse;
 	border: 1px solid #D1D5DA;
 }
+table td:first-of-type {
+	word-break: break-all;
+}
 td, th {
 	border: 1px solid #D1D5DA;
 	padding: 0.5em;
