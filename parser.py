@@ -2,6 +2,8 @@
 import argparse
 import os
 
+from htmlmin.minify import html_minify
+
 from jinja2 import Environment, FileSystemLoader
 
 from wirebackupparser.backupFile import WireBackup
@@ -55,14 +57,14 @@ if __name__ == '__main__':
 
     # Render html report
     with open('templates/main.html', 'r', encoding='utf-8') as f:
-        template = Environment(loader=FileSystemLoader("templates")).from_string(f.read())
+        env = Environment(trim_blocks=True, lstrip_blocks=True, loader=FileSystemLoader("templates")).from_string(f.read())
 
-    out = template.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")),
+    out = env.render(events=events.getEventsFromGroup(groups.getGroupByName("III MI")),
                           stats=stats,
                           group=groups.getGroupByName("III MI"),
                           export=backup.getBackupInfo())
 
     with open(os.path.join(outputDir, 'report.html'), 'w', encoding='utf-8') as f:
-        f.write(out)
+        f.write(html_minify(out))
 
     print("Generated report: file://{}".format(os.path.abspath(os.path.join(outputDir, "report.html"))))

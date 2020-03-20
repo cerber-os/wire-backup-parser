@@ -7,7 +7,7 @@
 		{% elif event.type == "conversation.asset-add" %}
 			{% if event.asset_kind == "image" %}
 				<a class="imgwrapper" href="assets/{{ event.asset_key }}" target="_blank">
-					<img src="assets/{{ event.asset_key }}">
+					<img src="assets/thumbnails/{{ event.asset_key }}.png">
 				</a>
 			{% elif event.asset_kind == "audio" %}
 				<audio src="assets/{{ event.asset_key }}"></audio>

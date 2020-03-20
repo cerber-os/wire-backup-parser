@@ -73,8 +73,3 @@ function showMessage(messageId) {
 	
 	setTimeout(function() { message.scrollIntoView(); }, 100);
 }
-
-window.onload = function() {
-	switchScreen();
-	paginate();
-}

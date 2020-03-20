@@ -30,6 +30,7 @@
 							<option value="desc">Newest first</option>
 							<option value="asc">Oldest first</option>
 						</select>
+						&nbsp;
 						<select id="perpage">
 							<option value="10">10 per page</option>
 							<option value="50">50 per page</option>
@@ -292,6 +293,10 @@
 						{% endfor %}
 					</div>
 				</section>
+				<script type="text/javascript">
+					switchScreen();
+					paginate();
+				</script>
 			</main>
 			<footer>
 				<a class="print" href="#" onclick="window.print(); return false">Print</a>
