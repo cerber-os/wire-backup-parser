@@ -6,7 +6,7 @@ from htmlmin.minify import html_minify
 from jinja2 import Environment, FileSystemLoader
 
 from wirebackupparser.backupFile import WireBackup
-from wirebackupparser.events import Events
+from wirebackupparser.events import Events, getUserByName
 from wirebackupparser.groups import Groups
 from wirebackupparser.stats import Stats
 from wirebackupparser.utils import genThumbsForFilesInDir
@@ -27,9 +27,12 @@ def createWorkingDir(arg):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Command-line tool for creating reports and statistics of Wire '
+                                                 'conversations')
     parser.add_argument('-f', '--file', help='backup file downloaded from Wire client', required=True)
-    parser.add_argument('-g', '--group', help='name of group to use', required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-g', '--group', help='the name of group to use')
+    group.add_argument('-u', '--user', help='the name of user to use')
     parser.add_argument('-o', '--output', help='directory in which output files should be saved', default=os.curdir)
     args = parser.parse_args()
 
@@ -44,13 +47,18 @@ if __name__ == '__main__':
     groups = Groups(backup)
     events = Events(backup, session)
 
+    if args.group:
+        target = groups.getGroupByName(args.group)
+    elif args.user:
+        target = groups.getDirectGroupByUserID(getUserByName(args.user))
+
     # generate statistics
     print("Generating stats...")
-    stats = Stats(events, groups.getGroupByName(args.group))
+    stats = Stats(events, target)
     stats.calculateStats()
 
     # Download assets
-    events.downloadAllAssetsInGroup(group=groups.getGroupByName(args.group),
+    events.downloadAllAssetsInGroup(group=target,
                                     assetsDir=assetsDir)
     genThumbsForFilesInDir(assetsDir, thumbsDir)
 
@@ -60,9 +68,9 @@ if __name__ == '__main__':
         env = Environment(trim_blocks=True, lstrip_blocks=True, loader=FileSystemLoader("templates")).from_string(
             f.read())
 
-    out = env.render(events=events.getEventsFromGroup(groups.getGroupByName(args.group)),
+    out = env.render(events=events.getEventsFromGroup(target),
                      stats=stats,
-                     group=groups.getGroupByName(args.group),
+                     group=target,
                      export=backup.getBackupInfo())
 
     with open(os.path.join(outputDir, 'report.html'), 'w', encoding='utf-8') as f:
