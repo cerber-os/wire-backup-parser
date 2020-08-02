@@ -21,6 +21,10 @@ Generate report of conversation named `Some group` using backup file `wire.backu
 ```shell script
 # python3 parser.py -f wire.backup -g 'Some Group' -o output
 ```
+Create report of private conversation with user `NickName`:
+```shell script
+# python3 parser.py -f wire.backup -u 'NickName' -o output
+```
 When requested, enter your Wire credentials
 
 **Note**: Full backup generation may take even a few hour, depending on the size of selected conversation
