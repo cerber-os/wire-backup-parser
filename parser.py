@@ -7,7 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from wirebackupparser.backupFile import WireBackup
 from wirebackupparser.events import Events, getUserByName
-from wirebackupparser.groups import Groups
+from wirebackupparser.conversations import Conversations
 from wirebackupparser.stats import Stats
 from wirebackupparser.utils import genThumbsForFilesInDir
 from wirebackupparser.wireAPI import WireApi
@@ -33,6 +33,7 @@ if __name__ == '__main__':
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-g', '--group', help='the name of group to use')
     group.add_argument('-u', '--user', help='the name of user to use')
+    group.add_argument('--uid', help='ID of user to use')
     parser.add_argument('-o', '--output', help='directory in which output files should be saved', default=os.curdir)
     args = parser.parse_args()
 
@@ -44,13 +45,19 @@ if __name__ == '__main__':
 
     # parse backup file
     print("Parsing backup...")
-    groups = Groups(backup)
     events = Events(backup, session)
+    groups = Conversations(backup)
 
     if args.group:
         target = groups.getGroupByName(args.group)
     elif args.user:
-        target = groups.getDirectGroupByUserID(getUserByName(args.user))
+        try:
+            target = groups.getDirectGroupByUserID(getUserByName(args.user))
+        except KeyError as e:
+            print("[+] Ambigous username! Try again with option -uid")
+            exit(1)
+    elif args.uid:
+        target = groups.getDirectGroupByUserID(args.uid)
 
     # generate statistics
     print("Generating stats...")
