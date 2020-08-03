@@ -54,7 +54,7 @@ if __name__ == '__main__':
         try:
             target = groups.getDirectGroupByUserID(getUserByName(args.user))
         except KeyError as e:
-            print("[+] Ambigous username! Try again with option -uid")
+            print("[+] Ambigous username! Try again with option --uid")
             exit(1)
     elif args.uid:
         target = groups.getDirectGroupByUserID(args.uid)
