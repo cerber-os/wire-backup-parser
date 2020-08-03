@@ -139,11 +139,17 @@ class Stats:
             entry = [[key, data[key]]]
             
             if share:
-                entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
+                if total != 0:
+                    entry[0] += [str(round(data[key] / total * 100, 2)) + "%"]
+                else:
+                    entry[0] += ["0%"]
             if histo:
-                percentage = data[key] / total
-                normalized = percentage / (maxValue / total)
-                entry[0] += [normalized * 100]
+                if total != 0:
+                    percentage = data[key] / total
+                    normalized = percentage / (maxValue / total)
+                    entry[0] += [normalized * 100]
+                else:
+                    entry[0] += [0]
                 
             entry[0] += [total]
             output += entry

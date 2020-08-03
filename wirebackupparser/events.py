@@ -23,6 +23,17 @@ def getUserByID(uid):
     raise KeyError("Cannot find user {} in provided dict".format(uid))
 
 
+def getUserByName(name):
+    result = [user for user in Users if user.name == name]
+    if len(result) > 1:
+        print("Available IDs for username {}:".format(name))
+        print("\n".join(map(lambda x: "\t- " + x.id, result)))
+        raise KeyError("Ambiguous username {} - found {} times".format(name, len(result)))
+    elif len(result) == 0:
+        raise KeyError("Username {} not found".format(name))
+    return result[0]
+
+
 class User:
     def __init__(self, uid):
         self.id = uid
